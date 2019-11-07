@@ -1,12 +1,21 @@
 /*
     Yokus Island Express
-    Version: 0.0.1
+    Version: 0.0.3
     Author: WarsheepGER
     Compatible Versions:
         Steam (PC) || W10 (functional) || W7 (untested, might not work)
     
-    
+    [[CHANGELOG]]
+    V:0.0.1 :Added LevelSkips/Gametime First Test
+	V:0.0.2 :Added ItemSkips rework some Codestuff
+	V:0.0.3 :Added StateSkips|Changelog|Credits|Version|Description, first work for default runs[any%true],some other stuff
+	
+	
     [[DESCRIPTION]]
+	U dont need to check Costume Splits when u run some Main Splits
+	
+	Plan for Version 0.0.4 Named all thinks right (name for checkboxes and Prints)
+	
 	any% true: noisemaker, Keydor, Titelscreen,Bossfight, end
 	any% no-oob: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), (fight sal), nimskey, kazoo, end
 	any% nims quest: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, (fight spina), (fight sal), nimskey, kazoo, end
@@ -16,6 +25,9 @@
 	wallet% ist einfach: noisemaker, wallet, wallet, slugvac, summons, mailbag, leash, hook, wallet wallet, divefish, creepy bauble, wallet, wallet, sweet bauble, wallet, violet package, wallet, wallet, 600fruits
     
     [[CREDITS]]
+	A realy Big Thans to Llerd Aka Jens Anderson (Devoloper of Yoku) for give me the Usefuls Memscans
+	Thanks to xWinG Aka Frederic Dantes (Speedrunner) to help me out to named some Stuff
+	Me WarsheepGER Aka Johannes Kersten the Creator of the Autosplitter
 */
 state("Yoku") 
     {
@@ -31,7 +43,7 @@ state("Yoku")
 */
 startup {
 	
-	settings.Add("speedrun", true,"Version 0.1. By WarsheepGER.");
+	settings.Add("speedrun", true,"Version 0.0.3 By WarsheepGER.");
 	settings.SetToolTip("speedrun", "Check this Option if you want to used the Autosplitter");
 	
 	settings.CurrentDefaultParent = "speedrun";
