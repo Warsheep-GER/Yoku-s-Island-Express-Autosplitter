@@ -1,49 +1,53 @@
-/*
-    Yokus Island Express
-    Version: 0.0.3
-    Author: WarsheepGER
+/*Info
+    Game:
+		Yokus Island Express
+    Version: 
+		0.0.3
+    Author: 
+		WarsheepGER
     Compatible Versions:
         Steam (PC) || W10 (functional) || W7 (untested, might not work)
     
-    [[CHANGELOG]]
-    V:0.0.1 :Added LevelSkips/Gametime First Test
-	V:0.0.2 :Added ItemSkips rework some Codestuff
-	V:0.0.3 :Added StateSkips|Changelog|Credits|Version|Description, first work for default runs[any%true],some other stuff
+    CHANGELOG
+		V:0.0.1 :Added LevelSkips/Gametime First Test
+		V:0.0.2 :Added ItemSkips rework some Codestuff
+		V:0.0.3 :Added StateSkips|Changelog|Credits|Version|Description, first work for default runs[any%true],some other stuff
+		V:0.0.4 :Added Kickback2 |Named all Settings|, first work for fruit% and wallet%
 	
-	
-    [[DESCRIPTION]]
-	U dont need to check Costume Splits when u run some Main Splits
-	
-	Plan for Version 0.0.4 Named all thinks right (name for checkboxes and Prints)
-	
-	any% true: noisemaker, Keydor, Titelscreen,Bossfight, end
-	any% no-oob: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), (fight sal), nimskey, kazoo, end
-	any% nims quest: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, (fight spina), (fight sal), nimskey, kazoo, end
-	any% all bosses: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, (fight spina), (fight sal), end
-	100%: noisemaker, kickback, slugvac, mailbag, divefish, idol1, double_fruit, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spore1, spore2, green_package, idol3, idol2, greenkey, bluekey, creepy bauble, tracker_cave, (fight sal), spore3, blue package, sweet bauble, idol4, dive_speed, violet package, spring_key, (fight spina), tracker_spring, spore4, nimskey, great postman badge, kazoo, end, kickback_ivory, spore5, tracker_ivory, tracker_woods, skvader_2, slug_upgrade, true end
-	true end: noisemaker, kickback, slugvac, summons, mailbag, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), bluekey, creepy bauble, (fight sal), sweet bauble, nimskey, kazoo, end, true end
-	wallet% ist einfach: noisemaker, wallet, wallet, slugvac, summons, mailbag, leash, hook, wallet wallet, divefish, creepy bauble, wallet, wallet, sweet bauble, wallet, violet package, wallet, wallet, 600fruits
+    DESCRIPTION
+		U dont need to check Costume Splits when u run some Main Splits
+		
+		Plan for Version 0.0.4 Named all Prints right
+		
+		any% true: noisemaker, Keydor, Titelscreen,Bossfight, end
+		any% no-oob: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), (fight sal), nimskey, kazoo, end
+		any% nims quest: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, (fight spina), (fight sal), nimskey, kazoo, end
+		any% all bosses: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, (fight spina), (fight sal), end
+		100%: noisemaker, kickback, slugvac, mailbag, divefish, idol1, double_fruit, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spore1, spore2, green_package, idol3, idol2, greenkey, bluekey, creepy bauble, tracker_cave, (fight sal), spore3, blue package, sweet bauble, idol4, dive_speed, violet package, spring_key, (fight spina), tracker_spring, spore4, nimskey, great postman badge, kazoo, end, kickback_ivory, spore5, tracker_ivory, tracker_woods, skvader_2, slug_upgrade, true end
+		true end: noisemaker, kickback, slugvac, summons, mailbag, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), bluekey, creepy bauble, (fight sal), sweet bauble, nimskey, kazoo, end, true end
+		wallet% ist einfach: noisemaker, wallet, wallet, slugvac, summons, mailbag, leash, hook, wallet wallet, divefish, creepy bauble, wallet, wallet, sweet bauble, wallet, violet package, wallet, wallet, 600fruits
     
-    [[CREDITS]]
-	A realy Big Thans to Llerd Aka Jens Anderson (Devoloper of Yoku) for give me the Usefuls Memscans
-	Thanks to xWinG Aka Frederic Dantes (Speedrunner) to help me out to named some Stuff
-	Me WarsheepGER Aka Johannes Kersten the Creator of the Autosplitter
+    CREDITS
+		A realy Big Thans to Llerd Aka Jens Anderson (Devoloper of Yoku) for give me the Usefuls Memscans
+		Thanks to xWinG Aka Frederic Dantes (Speedrunner) to help me out to named some Stuff
+		Thanks to the Users of Speedrun Tool Development Discord to help me by some Stuff, https://discord.gg/N6wv8pW
+		Me WarsheepGER Aka Johannes Kersten the Creator of the Autosplitter
 */
-state("Yoku") 
-    {
+/*State {}
+*/
+state("Yoku"){
         // Values for splits
         string42 LevelName : "Yoku.exe", 0x0054D620, 0x68, 0x130, 0x260, 0x88, 0x1F0; //memscan_level\nXXXXXXXX
         string24 GameTime : "Yoku.exe", 0x0054D620, 0x68, 0x60, 0x230, 0x28, 0xF0; //memscan_time\nXX:XX:XX.xx
         string47 GameItem : "Yoku.exe", 0x0054C2A8, 0x68, 0x130, 0x1B8, 0x28, 0x3F0; //memscan_last_item_added\nxxx:x
         string51 GameState : "Yoku.exe", 0x0054C2A8, 0x68, 0x130, 0x260, 0x88, 0x2F0; //memscan_last_state\nxxx:x
-    }
-	
-/*	
-    startup{} runs when the script gets loaded
+    }	
+/*startup{}
+	runs when the script gets loaded
 */
 startup {
 	
-	settings.Add("speedrun", true,"Version 0.0.3 By WarsheepGER.");
+	settings.Add("speedrun", true,"Version 0.0.4 By WarsheepGER.");
 	settings.SetToolTip("speedrun", "Check this Option if you want to used the Autosplitter");
 	
 	settings.CurrentDefaultParent = "speedrun";
@@ -67,11 +71,23 @@ startup {
 		settings.Add("wallet%", false, "Wallet%"); settings.SetToolTip("wallet%", "Check only this Option if you want to run Wallet%");
 		settings.Add("double%", false, "Double%"); settings.SetToolTip("double%", "Check only this Option if you want to run Double%");
 		settings.Add("dungball%", false, "Dungball%"); settings.SetToolTip("dungball%", "Check only this Option if you want to run Dungball%");
-		
+//todo		
 	settings.CurrentDefaultParent = "fruit%";
 		settings.Add("fruit100", false, "Fruits 100"); settings.SetToolTip("fruit100", "Check only this Option if you want to run Fruits 100");
 		settings.Add("fruit600", false, "Fruits 600"); settings.SetToolTip("fruit600", "Check only this Option if you want to run Fruits 600");
-	
+		
+	settings.CurrentDefaultParent = "wallet%";
+		settings.Add("wallet1", false, "Wallet 1"); settings.SetToolTip("wallet1", "Check only this Option if you want to run Wallet 1");
+		settings.Add("wallet2", false, "Wallet 2"); settings.SetToolTip("wallet2", "Check only this Option if you want to run Wallet 2");
+		settings.Add("wallet3", false, "Wallet 3"); settings.SetToolTip("wallet3", "Check only this Option if you want to run Wallet 3");
+		settings.Add("wallet4", false, "Wallet 4"); settings.SetToolTip("wallet4", "Check only this Option if you want to run Wallet 4");
+		settings.Add("wallet5", false, "Wallet 5"); settings.SetToolTip("wallet5", "Check only this Option if you want to run Wallet 5");
+		settings.Add("wallet6", false, "Wallet 6"); settings.SetToolTip("wallet6", "Check only this Option if you want to run Wallet 6");
+		settings.Add("wallet7", false, "Wallet 7"); settings.SetToolTip("wallet7", "Check only this Option if you want to run Wallet 7");
+		settings.Add("wallet8", false, "Wallet 8"); settings.SetToolTip("wallet8", "Check only this Option if you want to run Wallet 8");
+		settings.Add("wallet9", false, "Wallet 9"); settings.SetToolTip("wallet9", "Check only this Option if you want to run Wallet 9");
+		settings.Add("wallet0", false, "Wallet 10"); settings.SetToolTip("wallet0", "Check only this Option if you want to run Wallet 10");
+//todo
 	settings.CurrentDefaultParent = "costumesplits";
 		settings.Add("levelsplits", false, "Levels"); settings.SetToolTip("levelsplits", "Check this Option if you want to skip on Levels");
 		settings.Add("itemsplits", false, "Items"); settings.SetToolTip("itemsplits", "Check this Option if you want to skip on Items");
@@ -112,10 +128,9 @@ startup {
 	settings.CurrentDefaultParent = "hub"; settings.Add("hub_bowel_bumping_left", false, "Endboss [H0] [Any%True]"); settings.Add("hub_cliffside_creek", false, "Fleek Hidden Diva [H1]"); settings.Add("hub_festival", false, "Mokumas Pit [H2]"); settings.Add("hub_festival_sky", false, "Ivory Beeline [H3]"); settings.Add("hub_festival_upper", false, "Ivory Beeline and Kazzo [H4]"); settings.Add("hub_hermits_home", false, "Sin [H5]"); settings.Add("hub_island_express", false, "Top of Tall Totem Tower [H6] [Any%True]"); settings.Add("hub_left_lemur_lane", false, "Sandros Bridge [H7]"); settings.Add("hub_left_lofty_logo", false, "Titel Screen [H8] [Any%True]"); settings.Add("hub_marrow_maze", false, "Endboss Maze [H9]"); settings.Add("hub_obtainium_outland", false, "Willos last Puzzlepiece [HA]"); settings.Add("hub_soaring_stone", false, "Woods Beeline [HB]"); settings.Add("hub_village", false, "Mokumana Village [HC]"); settings.Add("hub_white_cliff", false, "Dipperloaf [HD]"); 
 	settings.CurrentDefaultParent = "intro"; settings.Add("intro_landing", false, "Startarea [I0]"); settings.Add("intro_landing_creepy_cavern", false, "Fosfor Skip [I1]"); settings.Add("intro_landing_left", false, "Beach Left [I2]"); settings.Add("intro_landing_right", false, "Sootlinghouse End of intro [I3]"); settings.Add("intro_landing_upper", false, "Noisemaker and Mushrooms [I4]"); settings.Add("intro_muddled_morass", false, "Fosfors Cave [I5]"); settings.Add("intro_secret", false, "Ocean Left  [I6]"); 
 	settings.CurrentDefaultParent = "island"; settings.Add("island_ending_2", false, "True End [I7]");
-	//name the rest of lvls with [X0]
-	settings.CurrentDefaultParent = "jungle"; settings.Add("jungle_canyon_caper", false, "Kickback Introduction [J0]"); settings.Add("jungle_crammed_canopy", false, "Poleskip to Secret Cave [J1]"); settings.Add("jungle_misty_meadow", false, "Meadow slugvacuum shed (jungle_misty_meadow)"); settings.Add("jungle_mollusc_madness", false, "Slug Introduction (jungle_mollusc_madness)"); settings.Add("jungle_roots", false, "Juicery and introshoot (jungle_roots)"); settings.Add("jungle_secluded_climb", false, "Climb to Waterfallskvader (jungle_secluded_climb)"); settings.Add("jungle_slug_struggle", false, "Great Ape (jungle_slug_struggle)"); settings.Add("jungle_spikey_stockade", false, "Secret Cave (jungle_spikey_stockade)"); settings.Add("jungle_tall_tall_tower", false, "Tall Totem Tower (jungle_tall_tall_tower)"); settings.Add("jungle_willy", false, "Willo Queststart(jungle_willy)"); 
-	settings.CurrentDefaultParent = "peak"; settings.Add("peak_aerial_ascent", false, "Obtainum-ore Station (peak_aerial_ascent"); settings.Add("peak_beanstalk_base", false, "Basecamp, Beanstalk (peak_beanstalk_base)"); settings.Add("peak_crooked_cliff", false, "Up the Beanstalk (peak_crooked_cliff)"); settings.Add("peak_crystal_crater", false, "Willo at Ivory Crater (peak_crystal_crater)"); settings.Add("peak_filthy_flat", false, "Lighthouse (peak_filthy_flat)"); settings.Add("peak_frostpine_forest", false, "Sootlingcaves (peak_frostpine_forest)"); settings.Add("peak_guano_grief", false, "Guano Tower (peak_guano_grief)"); settings.Add("peak_ice_cold_idol", false, "Water-Fountain (peak_ice_cold_idol)"); settings.Add("peak_obtainium_oracle", false, "Ojva, Trivial Facts (peak_obtainium_oracle)"); settings.Add("peak_sky", false, "Ivory Beeline (peak_sky)"); settings.Add("peak_spacemonk_mystery", false, "Spacemonk Spaceship (peak_spacemonk_mystery)"); settings.Add("peak_spider_fight", false, "Boon Boss, Spider Fight (peak_spider_fight)"); settings.Add("peak_underside", false, "Fountain/Town-skip (peak_underside)");
-	settings.CurrentDefaultParent = "spring"; settings.Add("spring_bubbly_basin", false, "Hidden Sanctuary (spring_bubbly_basin)"); settings.Add("spring_cloudburst_cliffs", false, "Great Falls, Waterfall (spring_cloudburst_cliffs)"); settings.Add("spring_gangway_grotto", false, "Skullgang Hideout (spring_gangway_grotto)"); settings.Add("spring_hazy_heaven", false, "Marrow Hills Beeline (spring_hazy_heaven)"); settings.Add("spring_hidden_hotspring", false, "Blowing Head, Bling Bauble (spring_hidden_hotspring)"); settings.Add("spring_jailhouse_japes", false, "Way from Waterfall to Unders (spring_jailhouse_japes)"); settings.Add("spring_shoddy_shanty", false, "Church of the Space Monks (spring_shoddy_shanty)"); settings.Add("spring_sleek_slabs", false, "Marrow Hills Waterfall to Hideout (spring_sleek_slabs)"); settings.Add("spring_tiny_broad", false, "Steam Slug (spring_tiny_broad)"); settings.Add("spring_tortoise_tunnel", false, "Way to Unders and Up to Glowmoths (spring_tortoise_tunnel)"); settings.Add("spring_yokos_yam", false, "Spina Boss, Preasure Fight (spring_yokos_yam)");
+	settings.CurrentDefaultParent = "jungle"; settings.Add("jungle_canyon_caper", false, "Kickback Introduction [J0]"); settings.Add("jungle_crammed_canopy", false, "Poleskip to Secret Cave [J1]"); settings.Add("jungle_misty_meadow", false, "Meadow slugvacuum shed [J2]"); settings.Add("jungle_mollusc_madness", false, "Slug Introduction [J3]"); settings.Add("jungle_roots", false, "Juicery and introshoot [J4]"); settings.Add("jungle_secluded_climb", false, "Climb to Waterfallskvader [J5]"); settings.Add("jungle_slug_struggle", false, "Great Ape [J6]"); settings.Add("jungle_spikey_stockade", false, "Secret Cave [J7]"); settings.Add("jungle_tall_tall_tower", false, "Tall Totem Tower [J8]"); settings.Add("jungle_willy", false, "Willo Queststart [J9]"); 
+	settings.CurrentDefaultParent = "peak"; settings.Add("peak_aerial_ascent", false, "Obtainum-ore Station [P0]"); settings.Add("peak_beanstalk_base", false, "Basecamp, Beanstalk [P1]"); settings.Add("peak_crooked_cliff", false, "Up the Beanstalk [P2]"); settings.Add("peak_crystal_crater", false, "Willo at Ivory Crater [P3]"); settings.Add("peak_filthy_flat", false, "Lighthouse [P4]"); settings.Add("peak_frostpine_forest", false, "Sootlingcaves [P5]"); settings.Add("peak_guano_grief", false, "Guano Tower [P6]"); settings.Add("peak_ice_cold_idol", false, "Water-Fountain [P7]"); settings.Add("peak_obtainium_oracle", false, "Ojva, Trivial Facts [P8]"); settings.Add("peak_sky", false, "Ivory Beeline [P9]"); settings.Add("peak_spacemonk_mystery", false, "Spacemonk Spaceship [PA]"); settings.Add("peak_spider_fight", false, "Boon Boss, Spider Fight [PB]"); settings.Add("peak_underside", false, "Fountain/Town-skip [PC]");
+	settings.CurrentDefaultParent = "spring"; settings.Add("spring_bubbly_basin", false, "Hidden Sanctuary [S0]"); settings.Add("spring_cloudburst_cliffs", false, "Great Falls, Waterfall [S1]"); settings.Add("spring_gangway_grotto", false, "Skullgang Hideout [S2]"); settings.Add("spring_hazy_heaven", false, "Marrow Hills Beeline [S3]"); settings.Add("spring_hidden_hotspring", false, "Blowing Head, Bling Bauble [S4]"); settings.Add("spring_jailhouse_japes", false, "Way from Waterfall to Unders [S5]"); settings.Add("spring_shoddy_shanty", false, "Church of the Space Monks [S6]"); settings.Add("spring_sleek_slabs", false, "Marrow Hills Waterfall to Hideout [S7]"); settings.Add("spring_tiny_broad", false, "Steam Slug [S8]"); settings.Add("spring_tortoise_tunnel", false, "Way to Unders and Up to Glowmoths [S9]"); settings.Add("spring_yokos_yam", false, "Spina Boss, Preasure Fight [Sa]");
 //Items
 	settings.CurrentDefaultParent = "mains"; settings.Add("collectible", false, "Wickerling"); settings.Add("wallet", false, "Wallet Upgrade"); settings.Add("summons", false, "Summons"); settings.Add("instrument_pile", false, "Ceremony Instruments"); settings.Add("sootling_leash", false, "Sootling Leash");
 	settings.CurrentDefaultParent = "abilities"; settings.Add("abilities/map", false, "Island Map"); settings.Add("abilities/partyhorn", false, "Noismaker [Any%True]"); settings.Add("abilities/mailbag", false, "Mail bag"); settings.Add("abilities/speed", false, "Grand Postmaster Badge"); settings.Add("abilities/double_fruit", false, "Boon of Plenty!"); settings.Add("abilities/slug_vaccum", false, "Slug Vacuum"); settings.Add("abilities/slug_upgrade", false, "Slug Vacuum Deluxe"); settings.Add("abilities/kickback", false, "Kickback"); settings.Add("abilities/dive", false, "Dive Fish"); settings.Add("abilities/dive_speed", false, "Fast Dive Fish"); settings.Add("abilities/hook", false, "Sootling on a Leash");
@@ -128,18 +143,22 @@ startup {
 	settings.CurrentDefaultParent = "tracker"; settings.Add("treasure_map", false, "Treasure Map"); settings.Add("tracker_caves", false, "Tracker: Crystal Deep"); settings.Add("tracker_jungle", false, "Tracker: Gorilla Woods"); settings.Add("tracker_peak", false, "Tracker: Ivory Peaks"); settings.Add("tracker_springs", false, "Tracker: MMarrow Hill"); settings.Add("tracker_scarabs", false, "Scarab Tracker");
 	settings.CurrentDefaultParent = "others"; settings.Add("powerups/skvader_1", false, "Skvader"); settings.Add("powerups/skvader_2", false, "Fat Skvader"); settings.Add("sad_spider", false, "Sad Spiderling");
 	settings.CurrentDefaultParent = "othersside"; settings.Add("traitor_spirit", false, "Traitor Spirit"); settings.Add("tadpole", false, "Tadpole"); settings.Add("dustbunny_dirty", false, "Sootling"); settings.Add("mushroom_2", false, "Juicy Cove Mushroom"); settings.Add("mushroom_3", false, "Poison Toadstool"); settings.Add("toolbox", false, "Toolbox"); settings.Add("postal_badge", false, "Old Postal Badge");
+
+//Extraitems
+	settings.CurrentDefaultParent = "abilities/kickback";settings.Add("abilities/kickback2", false, "Kickback 2");
 //State	
 	settings.CurrentDefaultParent = "othersplits";
-	settings.Add("door", false, "Doorroom open [Any%True]");
-	settings.Add("kickbackdead", false, "Kickback Dead [Any%True]");
+	settings.Add("doorintr", false, "Door Introduction [Any%True]");
+	settings.Add("endbossdead", false, "Endboss Dead [Any%True]");
 }
-/*
-    shutdown{} runs when the script gets unloaded (disabling autosplitter, closing LiveSplit, changing splits)
+/*shutdown{}
+	runs when the script gets unloaded (disabling autosplitter, closing LiveSplit, changing splits)
 */
-shutdown {}
-
-/*
-	init{} runs if the given process has been found (can occur multiple times during a session; if you reopen the game as an example)
+shutdown {
+	
+}
+/*init{}
+	runs if the given process has been found (can occur multiple times during a session; if you reopen the game as an example)
 */
 	init {/*
 
@@ -150,31 +169,36 @@ shutdown {}
 		version = "Mania Plus V1.06.0503";
 */
 }
-/*
-    exit{} runs when the attached process exits/dies
+/*exit{}
+    runs when the attached process exits/dies
 */
-exit {}
-/*
-    update{} always runs
+exit {
+	
+}
+/*update{}
+    always runs
     return false => prevents isLoading{}, gameTime{}, reset{}
 */
 update {
 	
 	return true;
 }
-/*
-    isLoading{} only runs when the timer's active (will be skipped if update{}'s returning false)
+/*isLoading{}
+    only runs when the timer's active (will be skipped if update{}'s returning false)
     return true => pauses the GameTime-Timer till the next tick
 */
-isLoading {}
-/*
-    gameTime{} only runs when the timer's active (will be skipped if update{}'s returning false)
+isLoading {
+	
+}
+/*gameTime{}
+    only runs when the timer's active (will be skipped if update{}'s returning false)
     return TimeSpan object => sets the GameTime-Timer to the passed time 
 */
-gameTime {}
-
-/*
-    reset{} only runs when the timer's started or paused (will be skipped if update{}'s returning false)
+gameTime {
+	
+}
+/*reset{}
+    only runs when the timer's started or paused (will be skipped if update{}'s returning false)
     return true => triggers a reset
 */
 reset {
@@ -185,9 +209,8 @@ reset {
         print("Autosplitter Resetted/Stopped");return true;
 	}}
 }
-
-/*
-    split{} only runs when the timer's running (and skipped if reset{} returns true)
+/*split{}
+    only runs when the timer's running (and skipped if reset{} returns true)
     return true => triggers a split
 */
 split {
@@ -278,7 +301,8 @@ split {
 	if(vars.abilities_double_fruit==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/double_fruit")){ print("Autosplitt abilities_double_fruit");vars.abilities_double_fruit=0;return true;}
 	if(vars.abilities_slug_vaccum==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/slug_vaccum")){ print("Autosplitt abilities_slug_vaccum");vars.abilities_slug_vaccum=0;return true;}
 	if(vars.abilities_slug_upgrade==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/slug_upgrade")){ print("Autosplitt abilities_slug_upgrade");vars.abilities_slug_upgrade=0;return true;}
-	if(vars.abilities_kickback==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){ print("Autosplitt abilities_kickback");vars.abilities_kickback=0;return true;}
+	if(vars.abilities_kickback==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){ print("Autosplitt Kickback");vars.abilities_kickback=0;return true;}
+	if(vars.abilities_kickback2==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){ vars.countkickback2=vars.countkickback2+1;if(vars.abilities_kickback2==2;){print("Autosplitt Kickback 2");vars.abilities_kickback2=0;return true;}}	
 	if(vars.abilities_dive==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/dive")){ print("Autosplitt abilities_dive");vars.abilities_dive=0;return true;}
 	if(vars.abilities_dive_speed==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/dive_speed")){ print("Autosplitt abilities_dive_speed");vars.abilities_dive_speed=0;return true;}
 	if(vars.abilities_hook==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/hook")){ print("Autosplitt abilities_hook");vars.abilities_hook=0;return true;}
@@ -325,13 +349,12 @@ split {
 	}
 //State
 	if (String.IsNullOrEmpty(current.GameState)){}else{
-	if(vars.door==1 && current.GameState.Equals("memscan_last_state\nintro_landing_creepy_cavern:327")){ print("Autosplitt door");vars.door=0;return true;}
-	if(vars.kickbackdead==1 && current.GameState.Equals("memscan_last_state\nhub_bowel_bumping_left:3246")){ print("Autosplitt kickbackdead");vars.kickbackdead=0;return true;}
+	if(vars.doorintr==1 && current.GameState.Equals("memscan_last_state\nintro_landing_creepy_cavern:327")){ print("Autosplitt Door Introduction");vars.doorintr=0;return true;}
+	if(vars.endbossdead==1 && current.GameState.Equals("memscan_last_state\nhub_bowel_bumping_left:3246")){ print("Autosplitt Endboss dead");vars.endbossdead=0;return true;}
 	}
 }
-
-/*
-    start{} only runs when the timer's paused
+/*start{}
+    only runs when the timer's paused
     return true => starts the timer
 */
 start {
@@ -421,7 +444,8 @@ start {
 			if (settings["abilities/double_fruit"]){vars.abilities_double_fruit=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_double_fruit=0;}
 			if (settings["abilities/slug_vaccum"]){vars.abilities_slug_vaccum=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_slug_vaccum=0;}
 			if (settings["abilities/slug_upgrade"]){vars.abilities_slug_upgrade=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_slug_upgrade=0;}
-			if (settings["abilities/kickback"]){vars.abilities_kickback=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_kickback=0;}
+			if (settings["abilities/kickback"]){vars.abilities_kickback=1; print("Autosplitter| Split: Kickback aktivated");}else{ vars.abilities_kickback=0;}
+			if (settings["abilities/kickback2"]){vars.abilities_kickback2=1;vars.countkickback2=0; print("Autosplitter| Split: Kickback 2 aktivated");}else{ vars.abilities_kickback2=0;}
 			if (settings["abilities/dive"]){vars.abilities_dive=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_dive=0;}
 			if (settings["abilities/dive_speed"]){vars.abilities_dive_speed=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_dive_speed=0;}
 			if (settings["abilities/hook"]){vars.abilities_hook=1; print("Autosplitter| Split: X aktivated");}else{ vars.abilities_hook=0;}
@@ -455,19 +479,19 @@ start {
 			if (settings["spores_3"]){vars.spores_3=1; print("Autosplitter| Split: X aktivated");}else{ vars.spores_3=0;}
 			if (settings["spores_4"]){vars.spores_4=1; print("Autosplitter| Split: X aktivated");}else{ vars.spores_4=0;}
 			if (settings["spores_5"]){vars.spores_5=1; print("Autosplitter| Split: X aktivated");}else{ vars.spores_5=0;}
-			if (settings["tracker_caves"]){vars.tracker_caves=1; print("Autosplitter| Split: X aktivated");}else{ vars.tracker_caves=0;}
-			if (settings["tracker_jungle"]){vars.tracker_jungle=1; print("Autosplitter| Split: X aktivated");}else{ vars.tracker_jungle=0;}
-			if (settings["tracker_peak"]){vars.tracker_peak=1; print("Autosplitter| Split: X aktivated");}else{ vars.tracker_peak=0;}
-			if (settings["tracker_springs"]){vars.tracker_springs=1; print("Autosplitter| Split: X aktivated");}else{ vars.tracker_springs=0;}
-			if (settings["tracker_scarabs"]){vars.tracker_scarabs=1; print("Autosplitter| Split: X aktivated");}else{ vars.tracker_scarabs=0;}
+			if (settings["tracker_caves"]){vars.tracker_caves=1; print("Autosplitter| Split: Cave Tracker aktivated");}else{ vars.tracker_caves=0;}
+			if (settings["tracker_jungle"]){vars.tracker_jungle=1; print("Autosplitter| Split: Jungle Tracker aktivated");}else{ vars.tracker_jungle=0;}
+			if (settings["tracker_peak"]){vars.tracker_peak=1; print("Autosplitter| Split: Peak Tracker aktivated");}else{ vars.tracker_peak=0;}
+			if (settings["tracker_springs"]){vars.tracker_springs=1; print("Autosplitter| Split: Springs Tracker aktivated");}else{ vars.tracker_springs=0;}
+			if (settings["tracker_scarabs"]){vars.tracker_scarabs=1; print("Autosplitter| Split: Scarabs Tracker aktivated");}else{ vars.tracker_scarabs=0;}
 			if (settings["skins/skin_1"]){vars.skins_skin_1=1; print("Autosplitter| Split: Bling Sprinkles aktivated");}else{ vars.skins_skin_1=0;}
 			if (settings["skins/skin_2"]){vars.skins_skin_2=1; print("Autosplitter| Split: Creepy Sprinkles aktivated");}else{ vars.skins_skin_2=0;}
 			if (settings["skins/skin_3"]){vars.skins_skin_3=1; print("Autosplitter| Split: Deadly Sprinkles aktivated");}else{ vars.skins_skin_3=0;}
 			if (settings["skins/skin_4"]){vars.skins_skin_4=1; print("Autosplitter| Split: Crimson Sprinkles aktivated");}else{ vars.skins_skin_4=0;}
 			if (settings["skins/skin_5"]){vars.skins_skin_5=1; print("Autosplitter| Split: Sweet Sprinkles aktivated");}else{ vars.skins_skin_5=0;}
 //State
-			if (settings["door"] || settings["any%true"]){vars.door=1; print("Autosplitter| Split: Door aktivated"); }else{ vars.door=0;}
-			if (settings["kickbackdead"] || settings["any%true"]){vars.kickbackdead=1; print("Autosplitter| Split: Kickback aktivated"); }else{ vars.kickbackdead=0;}
+			if (settings["doorintr"] || settings["any%true"]){vars.doorintr=1; print("Autosplitter| Split: Door Introduction aktivated"); }else{ vars.doorintr=0;}
+			if (settings["endbossdead"] || settings["any%true"]){vars.endbossdead=1; print("Autosplitter| Split: Endboss dead aktivated"); }else{ vars.endbossdead=0;}
 			print("Autosplitter| Started");return true;
 		}
 		}		
