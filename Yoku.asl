@@ -2,7 +2,7 @@
     Game:
 		Yokus Island Express
     Version: 
-		0.0.3
+		0.0.4
     Author: 
 		WarsheepGER
     Compatible Versions:
@@ -12,12 +12,12 @@
 		V:0.0.1 :Added LevelSkips/Gametime First Test
 		V:0.0.2 :Added ItemSkips rework some Codestuff
 		V:0.0.3 :Added StateSkips|Changelog|Credits|Version|Description, first work for default runs[any%true],some other stuff
-		V:0.0.4 :Added Kickback2 |Named all Settings|, first work for fruit% and wallet%
+		V:0.0.4 :Added Kickback2 |Named all Settings|, first work for fruit% and wallet% ,change starttime to ,1 to have 9ms tostart, sometimes he jumped over 1ms, fixed littl bug with a variable
 	
     DESCRIPTION
 		U dont need to check Costume Splits when u run some Main Splits
 		
-		Plan for Version 0.0.4 Named all Prints right
+		Plan for Version 0.0.5 need to fix selection for fruits wallets, kickbackcounter need be fixed, name all prints correctly
 		
 		any% true: noisemaker, Keydor, Titelscreen,Bossfight, end
 		any% no-oob: noisemaker, kickback, slugvac, summons, leash, hook, bucket, filled_bucket, seedpod, guano, (fight boon), spring_key, divefish, (fight spina), (fight sal), nimskey, kazoo, end
@@ -38,9 +38,10 @@
 state("Yoku"){
         // Values for splits
         string42 LevelName : "Yoku.exe", 0x0054D620, 0x68, 0x130, 0x260, 0x88, 0x1F0; //memscan_level\nXXXXXXXX
-        string24 GameTime : "Yoku.exe", 0x0054D620, 0x68, 0x60, 0x230, 0x28, 0xF0; //memscan_time\nXX:XX:XX.xx
+        string23 GameTime : "Yoku.exe", 0x0054D620, 0x68, 0x60, 0x230, 0x28, 0xF0; //memscan_time\nXX:XX:XX.xx
         string47 GameItem : "Yoku.exe", 0x0054C2A8, 0x68, 0x130, 0x1B8, 0x28, 0x3F0; //memscan_last_item_added\nxxx:x
         string51 GameState : "Yoku.exe", 0x0054C2A8, 0x68, 0x130, 0x260, 0x88, 0x2F0; //memscan_last_state\nxxx:x
+        int GameFruits : "Yoku.exe", 0x0054D620, 0x68, 0x130, 0x1B8, 0x28, 0xAB0; //xxx
     }	
 /*startup{}
 	runs when the script gets loaded
@@ -71,7 +72,7 @@ startup {
 		settings.Add("wallet%", false, "Wallet%"); settings.SetToolTip("wallet%", "Check only this Option if you want to run Wallet%");
 		settings.Add("double%", false, "Double%"); settings.SetToolTip("double%", "Check only this Option if you want to run Double%");
 		settings.Add("dungball%", false, "Dungball%"); settings.SetToolTip("dungball%", "Check only this Option if you want to run Dungball%");
-//todo		
+//todo	need to be on custome splits	
 	settings.CurrentDefaultParent = "fruit%";
 		settings.Add("fruit100", false, "Fruits 100"); settings.SetToolTip("fruit100", "Check only this Option if you want to run Fruits 100");
 		settings.Add("fruit600", false, "Fruits 600"); settings.SetToolTip("fruit600", "Check only this Option if you want to run Fruits 600");
@@ -204,7 +205,7 @@ gameTime {
 reset {
 	if (String.IsNullOrEmpty(current.GameTime)){
 	}else{
-    if(current.GameTime.Equals("memscan_time\n00:00:00.00"))
+    if(current.GameTime.Equals("memscan_time\n00:00:00.0"))
 	{
         print("Autosplitter Resetted/Stopped");return true;
 	}}
@@ -287,8 +288,8 @@ split {
 //Items 
 
 	if (String.IsNullOrEmpty(current.GameItem)){}else{
-	if(vars.collectible==1 && current.GameItem.Equals("memscan_last_item_added\ncollectible")){ print("Autosplitt collectible");vars.collectible=0;return true;}
-	if(vars.wallet==1 && current.GameItem.Equals("memscan_last_item_added\nwallet")){ print("Autosplitt wallet");vars.wallet=0;return true;}
+	if(vars.collectible==1 && current.GameItem.Equals("memscan_last_item_added\ncollectible")){ print("Autosplitt Wickerling 1");vars.collectible=0;return true;}
+	if(vars.wallet==1 && current.GameItem.Equals("memscan_last_item_added\nwallet")){ print("Autosplitt Wallet 1");vars.wallet=0;return true;}
 	if(vars.tadpole==1 && current.GameItem.Equals("memscan_last_item_added\ntadpole")){ print("Autosplitt tadpole");vars.tadpole=0;return true;}
 	if(vars.dustbunny_dirty==1 && current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty")){ print("Autosplitt dustbunny_dirty");vars.dustbunny_dirty=0;return true;}
 	if(vars.nugget==1 && current.GameItem.Equals("memscan_last_item_added\nnugget")){ print("Autosplitt nugget");vars.nugget=0;return true;}
@@ -302,7 +303,7 @@ split {
 	if(vars.abilities_slug_vaccum==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/slug_vaccum")){ print("Autosplitt abilities_slug_vaccum");vars.abilities_slug_vaccum=0;return true;}
 	if(vars.abilities_slug_upgrade==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/slug_upgrade")){ print("Autosplitt abilities_slug_upgrade");vars.abilities_slug_upgrade=0;return true;}
 	if(vars.abilities_kickback==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){ print("Autosplitt Kickback");vars.abilities_kickback=0;return true;}
-	if(vars.abilities_kickback2==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){ vars.countkickback2=vars.countkickback2+1;if(vars.abilities_kickback2==2;){print("Autosplitt Kickback 2");vars.abilities_kickback2=0;return true;}}	
+	if(vars.abilities_kickback2==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/kickback")){vars.countkickback2=vars.countkickback2+1;if(vars.countkickback2==2){print("Autosplitt Kickback 2");vars.abilities_kickback2=0;return true;}}	//logischer fehler drin splittet sofort nach kickback1 weil item drin stehen bleibt...
 	if(vars.abilities_dive==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/dive")){ print("Autosplitt abilities_dive");vars.abilities_dive=0;return true;}
 	if(vars.abilities_dive_speed==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/dive_speed")){ print("Autosplitt abilities_dive_speed");vars.abilities_dive_speed=0;return true;}
 	if(vars.abilities_hook==1 && current.GameItem.Equals("memscan_last_item_added\nabilities/hook")){ print("Autosplitt abilities_hook");vars.abilities_hook=0;return true;}
@@ -351,6 +352,8 @@ split {
 	if (String.IsNullOrEmpty(current.GameState)){}else{
 	if(vars.doorintr==1 && current.GameState.Equals("memscan_last_state\nintro_landing_creepy_cavern:327")){ print("Autosplitt Door Introduction");vars.doorintr=0;return true;}
 	if(vars.endbossdead==1 && current.GameState.Equals("memscan_last_state\nhub_bowel_bumping_left:3246")){ print("Autosplitt Endboss dead");vars.endbossdead=0;return true;}
+	if(vars.fruit100==1 && current.GameFruits==100){ print("Autosplitt Fruits 100");vars.fruit100=0;return true;}
+	if(vars.fruit600==1 && current.GameFruits==600){ print("Autosplitt Fruits 600");vars.fruit600=0;return true;}
 	}
 }
 /*start{}
@@ -360,7 +363,7 @@ split {
 start {
 	if (settings["speedrun"]) {
 		if (String.IsNullOrEmpty(current.GameTime)){}else{
-		if(current.GameTime.Equals("memscan_time\n00:00:00.01")) { 	
+		if(current.GameTime.Equals("memscan_time\n00:00:00.1")) { 	
 //Levels
 			if (settings["cave_abyssal_access"]){vars.cave_abyssal_access=1; print("Autosplitter| Split: X aktivated");}else{ vars.cave_abyssal_access=0;}
 			if (settings["cave_beach_bottom"]){vars.cave_beach_bottom=1; print("Autosplitter| Split: X aktivated");}else{ vars.cave_beach_bottom=0;}
@@ -396,7 +399,7 @@ start {
 			if (settings["intro_secret"]){vars.intro_secret=1; print("Autosplitter| Split: X aktivated");}else{ vars.intro_secret=0;}								
 			if (settings["island_ending_2"]){vars.island_ending_2=1; print("Autosplitter| Split: X aktivated");}else{ vars.island_ending_2=0;}							
 			if (settings["jungle_canyon_caper"]){vars.jungle_canyon_caper=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_canyon_caper=0;}
-			if (settings["jungle_crammed_canopy"]){vars.jungle_crammed_canop=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_crammed_canopy=0;}
+			if (settings["jungle_crammed_canopy"]){vars.jungle_crammed_canopy=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_crammed_canopy=0;}
 			if (settings["jungle_misty_meadow"]){vars.jungle_misty_meadow=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_misty_meadow=0;}
 			if (settings["jungle_mollusc_madness"]){vars.jungle_mollusc_madness=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_mollusc_madness=0;}
 			if (settings["jungle_roots"]){vars.jungle_roots=1; print("Autosplitter| Split: X aktivated");}else{ vars.jungle_roots=0;}
@@ -492,6 +495,8 @@ start {
 //State
 			if (settings["doorintr"] || settings["any%true"]){vars.doorintr=1; print("Autosplitter| Split: Door Introduction aktivated"); }else{ vars.doorintr=0;}
 			if (settings["endbossdead"] || settings["any%true"]){vars.endbossdead=1; print("Autosplitter| Split: Endboss dead aktivated"); }else{ vars.endbossdead=0;}
+			if (settings["fruit100"]){vars.fruit100=1; print("Autosplitter| Split: Fruit 100 aktivated"); }else{ vars.fruit100=0;}
+			if (settings["fruit600"]){vars.fruit600=1; print("Autosplitter| Split: Fruit 600 aktivated"); }else{ vars.fruit600=0;}
 			print("Autosplitter| Started");return true;
 		}
 		}		
