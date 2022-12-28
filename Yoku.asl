@@ -27,7 +27,7 @@
 		0.1 	:fix for -kickback2. named all Splits right.Added Mainsplits: anytrue ,ayn%boss ,any%nim ,anynooob ,fruit ,wallet ,double ,true end ,100
 		0.2 	:Added Wickerlings to true end and 100. added Ebon talk to No-OOB and any%nim. added Totems ,Fixed(overworked) nugget traitor dustbunny wallet wickerling and totem counters 
 		0.3 	:cleanup code littsl bit. Added better DebugLog
-		0.4
+		0.4 	:shorts the code with ms1-ms6 to hold the file smaler
 	
 
 		
