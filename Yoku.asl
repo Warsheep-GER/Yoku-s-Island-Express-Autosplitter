@@ -1,6 +1,6 @@
 /* Info Autosplitter
     Game: Yokus Island Express
-    Version: 0.3
+    Version: 0.4
     Author: WarsheepGER
 	Date: 26.11.2019
     Compatible Versions:
@@ -27,8 +27,9 @@
 		0.1 	:fix for -kickback2. named all Splits right.Added Mainsplits: anytrue ,ayn%boss ,any%nim ,anynooob ,fruit ,wallet ,double ,true end ,100
 		0.2 	:Added Wickerlings to true end and 100. added Ebon talk to No-OOB and any%nim. added Totems ,Fixed(overworked) nugget traitor dustbunny wallet wickerling and totem counters 
 		0.3 	:cleanup code littsl bit. Added better DebugLog
+		0.4
 	
-	
+
 		
 		ToDO: 
 		-optimizing code
@@ -42,15 +43,15 @@
 
 state("Yoku"){
         // Values for splits
-        string23 GameTime :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0xF0;//memscan_time\nXX:XX:XX.xx
-        string42 LevelName :	"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x1F0;//memscan_level\nXXXXXXXX
-        string51 GameState :	"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x2F0;//memscan_last_state\nxxx:x
-		string50 GameItem :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x3F0;//memscan_last_item_added\nxxx:x  or memscan_last_item_removed\nxxx:x
-        int GameFruits :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0xAB0;//xxx
+		string14 GameTime :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0xF0;//ms5\nXX:XX:XX.xx
+		string42 LevelName :	"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x1F0;//ms6\nXXXXXXXX
+		string51 GameState :	"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x2F0;//ms1\nxxx:x
+		string50 GameItem :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0x3F0;//ms2\nxxx:x or ms3\nxxx:x
+		int GameFruits :		"Yoku.exe",0x005525D0,0x68,0x460,0x60,0x260,0x88,0xAB0;//xxx
 }
 	 
 startup {//runs when the script gets loaded
-	settings.Add("speedrun",true,"Autosplitter| Version: 0.3 By WarsheepGER");settings.SetToolTip("speedrun","Check the Options you want to used for the Autosplitter");
+	settings.Add("speedrun",true,"Autosplitter| Version: 0.4 By WarsheepGER");settings.SetToolTip("speedrun","Check the Options you want to used for the Autosplitter");
 	settings.CurrentDefaultParent="speedrun";
 		settings.Add("mainsplits",true,"Main Splits");settings.SetToolTip("mainsplits","Check only 1 of this Sub Option to run with Default Splits");
 		settings.Add("costumesplits",false,"Costume Splits");settings.SetToolTip("costumesplits","Check this Option to run with Costume Splits");
@@ -262,7 +263,7 @@ startup {//runs when the script gets loaded
 		settings.Add("fruit600",false,"Fruits 600");settings.SetToolTip("fruit600","Check this Option if you want to run Fruits 600");
 //DebugLog
 	Action<string>Log=(text)=>{
-		print("Autosplitter| "+text);};
+	print("Autosplitter| "+text);};
 vars.Log = Log;}
 
 shutdown {//runs when the script gets unloaded (disabling autosplitter,closing LiveSplit,changing splits)	
@@ -286,218 +287,218 @@ gameTime {//only runs when the timer's active (will be skipped if update{}'s ret
 
 reset {//only runs when the timer's started or paused (will be skipped if update{}'s returning false) ,return true => triggers a reset
 	if(String.IsNullOrEmpty(current.GameTime)){}else{
-		if(current.GameTime.Equals("memscan_time\n00:00:00.0")){
+		if(current.GameTime.Equals("ms5\n00:00:00.0")){
 			vars.Log("Resetted");return true;}}
 }
 
 split {//only runs when the timer's running (and skipped if reset{} returns true) ,return true => triggers a split
 //Level 
 	if(String.IsNullOrEmpty(current.LevelName)){}else{
-	if(vars.cave_abyssal_access==1&&current.LevelName.Equals("memscan_level\ncave_abyssal_access")){vars.Log("Split: Door Friends Bottom Left [C0]");vars.cave_abyssal_access=0;return true;}
-	if(vars.cave_beach_bottom==1&&current.LevelName.Equals("memscan_level\ncave_beach_bottom")){vars.Log("Split: Ocean Right [C1]");vars.cave_beach_bottom=0;return true;}
-	if(vars.cave_beaver_blockade==1&&current.LevelName.Equals("memscan_level\ncave_beaver_blockade")){vars.Log("Split: Door Friends [C2]");vars.cave_beaver_blockade=0;return true;}
-	if(vars.cave_boss==1&&current.LevelName.Equals("memscan_level\ncave_boss")){vars.Log("Split: Screetch [C3]");vars.cave_boss=0;return true;}
-	if(vars.cave_clammy_cenote==1&&current.LevelName.Equals("memscan_level\ncave_clammy_cenote")){vars.Log("Split: The Dolphin [C4]");vars.cave_clammy_cenote=0;return true;}
-	if(vars.cave_east_bay_shore==1&&current.LevelName.Equals("memscan_level\ncave_east_bay_shore")){vars.Log("Split: Beach Right [C5]");vars.cave_east_bay_shore=0;return true;}
-	if(vars.cave_temple_terror_entrance==1&&current.LevelName.Equals("memscan_level\ncave_temple_terror_entrance")){vars.Log("Split: Temple Trials Entrance [C6]");vars.cave_temple_terror_entrance=0;return true;}
-	if(vars.cave_temple_terror_lower==1&&current.LevelName.Equals("memscan_level\ncave_temple_terror_lower")){vars.Log("Split: Temple Trials [C7]");vars.cave_temple_terror_lower=0;return true;}
-	if(vars.cave_temple_terror_treasury==1&&current.LevelName.Equals("memscan_level\ncave_temple_terror_treasury")){vars.Log("Split: Temple Treasury [C8]");vars.cave_temple_terror_treasury=0;return true;}
-	if(vars.cave_temple_terror_upper==1&&current.LevelName.Equals("memscan_level\ncave_temple_terror_upper")){vars.Log("Split: God Egg [C9]");vars.cave_temple_terror_upper=0;return true;}
-	if(vars.cave_winding_waterway==1&&current.LevelName.Equals("memscan_level\ncave_winding_waterway")){vars.Log("Split: Stupid Wickerling [CA]");vars.cave_winding_waterway=0;return true;}		
-	if(vars.hub_bowel_bumping_left==1&&current.LevelName.Equals("memscan_level\nhub_bowel_bumping_left")){vars.Log("Split: Endboss [H0]");vars.hub_bowel_bumping_left=0;return true;}			
-	if(vars.hub_cliffside_creek==1&&current.LevelName.Equals("memscan_level\nhub_cliffside_creek")){vars.Log("Split: Fleek Hidden Diva [H1]");vars.hub_cliffside_creek=0;return true;}
-	if(vars.hub_festival==1&&current.LevelName.Equals("memscan_level\nhub_festival")){vars.Log("Split: Mokumas Pit [H2]");vars.hub_festival=0;return true;}
-	if(vars.hub_festival_sky==1&&current.LevelName.Equals("memscan_level\nhub_festival_sky")){vars.Log("Split: Ivory Beeline [H3]");vars.hub_festival_sky=0;return true;}
-	if(vars.hub_festival_upper==1&&current.LevelName.Equals("memscan_level\nhub_festival_upper")){vars.Log("Split: Ivory Beeline and Kazzo [H4]");vars.hub_festival_upper=0;return true;}
-	if(vars.hub_hermits_home==1&&current.LevelName.Equals("memscan_level\nhub_hermits_home")){vars.Log("Split: Sin [H5]");vars.hub_hermits_home=0;return true;}
-	if(vars.hub_island_express==1&&current.LevelName.Equals("memscan_level\nhub_island_express")){vars.Log("Split: Top of Tall Totem Tower [H6]");vars.hub_island_express=0;return true;}
-	if(vars.hub_left_lemur_lane==1&&current.LevelName.Equals("memscan_level\nhub_left_lemur_lane")){vars.Log("Split: Sandros Bridge [H7]");vars.hub_left_lemur_lane=0;return true;}
-	if(vars.hub_left_lofty_logo==1&&current.LevelName.Equals("memscan_level\nhub_left_lofty_logo")){vars.Log("Split: Titel Screen [H8]");vars.hub_left_lofty_logo=0;return true;}
-	if(vars.hub_marrow_maze==1&&current.LevelName.Equals("memscan_level\nhub_marrow_maze")){vars.Log("Split: Endboss Maze [H9]");vars.hub_marrow_maze=0;return true;}
-	if(vars.hub_obtainium_outland==1&&current.LevelName.Equals("memscan_level\nhub_obtainium_outland")){vars.Log("Split: Willos last Puzzlepiece [HA]");vars.hub_obtainium_outland=0;return true;}
-	if(vars.hub_soaring_stone==1&&current.LevelName.Equals("memscan_level\nhub_soaring_stone")){vars.Log("Split: Woods Beeline [HB]");vars.hub_soaring_stone=0;return true;}
-	if(vars.hub_village==1&&current.LevelName.Equals("memscan_level\nhub_village")){vars.Log("Split: Mokumana Village [HC]");vars.hub_village=0;return true;}
-	if(vars.hub_white_cliff==1&&current.LevelName.Equals("memscan_level\nhub_white_cliff")){vars.Log("Split: Dipperloaf [HD]");vars.hub_white_cliff=0;return true;}
-	if(vars.intro_landing==1&&current.LevelName.Equals("memscan_level\nintro_landing")){vars.Log("Split: Startarea [I0]");vars.intro_landing=0;return true;}
-	if(vars.intro_landing_creepy_cavern==1&&current.LevelName.Equals("memscan_level\nintro_landing_creepy_cavern")){vars.Log("Split: Fosfor Skip [I1]");vars.intro_landing_creepy_cavern=0;return true;}
-	if(vars.intro_landing_left==1&&current.LevelName.Equals("memscan_level\nintro_landing_left")){vars.Log("Split: Beach Left [I2]");vars.intro_landing_left=0;return true;}
-	if(vars.intro_landing_right==1&&current.LevelName.Equals("memscan_level\nintro_landing_right")){vars.Log("Split: Sootlinghouse End of intro [I3]");vars.intro_landing_right=0;return true;}
-	if(vars.intro_landing_upper==1&&current.LevelName.Equals("memscan_level\nintro_landing_upper")){vars.Log("Split: Noisemaker and Mushrooms [I4]");vars.intro_landing_upper=0;return true;}
-	if(vars.intro_muddled_morass==1&&current.LevelName.Equals("memscan_level\nintro_muddled_morass")){vars.Log("Split: Fosfors Cave [I5]");vars.intro_muddled_morass=0;return true;}
-	if(vars.intro_secret==1&&current.LevelName.Equals("memscan_level\nintro_secret")){vars.Log("Split: Ocean Left  [I6]");vars.intro_secret=0;return true;}
-	if(vars.island_ending_2==1&&current.LevelName.Equals("memscan_level\nisland_ending_2")){vars.Log("Split: True End [I7]");vars.island_ending_2=0;return true;}	
-	if(vars.jungle_canyon_caper==1&&current.LevelName.Equals("memscan_level\njungle_canyon_caper")){vars.Log("Split: Kickback Introduction [J0]");vars.jungle_canyon_caper=0;return true;}
-	if(vars.jungle_crammed_canopy==1&&current.LevelName.Equals("memscan_level\njungle_crammed_canopy")){vars.Log("Split: Poleskip to Secret Cave [J1]");vars.jungle_crammed_canopy=0;return true;}
-	if(vars.jungle_misty_meadow==1&&current.LevelName.Equals("memscan_level\njungle_misty_meadow")){vars.Log("Split: Meadow slugvacuum shed [J2]");vars.jungle_misty_meadow=0;return true;}
-	if(vars.jungle_mollusc_madness==1&&current.LevelName.Equals("memscan_level\njungle_mollusc_madness")){vars.Log("Split: Slug Introduction [J3]");vars.jungle_mollusc_madness=0;return true;}
-	if(vars.jungle_roots==1&&current.LevelName.Equals("memscan_level\njungle_roots")){vars.Log("Split: Juicery and introshoot [J4]");vars.jungle_roots=0;return true;}
-	if(vars.jungle_secluded_climb==1&&current.LevelName.Equals("memscan_level\njungle_secluded_climb")){vars.Log("Split: Climb to Waterfallskvader [J5]");vars.jungle_secluded_climb=0;return true;}
-	if(vars.jungle_slug_struggle==1&&current.LevelName.Equals("memscan_level\njungle_slug_struggle")){vars.Log("Split: Great Ape [J6]");vars.jungle_slug_struggle=0;return true;}
-	if(vars.jungle_spikey_stockade==1&&current.LevelName.Equals("memscan_level\njungle_spikey_stockade")){vars.Log("Split: Secret Cave [J7]");vars.jungle_spikey_stockade=0;return true;}
-	if(vars.jungle_tall_tall_tower==1&&current.LevelName.Equals("memscan_level\njungle_tall_tall_tower")){vars.Log("Split: Tall Totem Tower [J8]");vars.jungle_tall_tall_tower=0;return true;}
-	if(vars.jungle_willy==1&&current.LevelName.Equals("memscan_level\njungle_willy")){vars.Log("Split: Willo Queststart [J9]");vars.jungle_willy=0;return true;}	
-	if(vars.peak_aerial_ascent==1&&current.LevelName.Equals("memscan_level\npeak_aerial_ascent")){vars.Log("Split: Obtainum-ore Station [P0]");vars.peak_aerial_ascent=0;return true;}	
-	if(vars.peak_beanstalk_base==1&&current.LevelName.Equals("memscan_level\npeak_beanstalk_base")){vars.Log("Split: Basecamp,Beanstalk [P1]");vars.peak_beanstalk_base=0;return true;}	
-	if(vars.peak_crooked_cliff==1&&current.LevelName.Equals("memscan_level\npeak_crooked_cliff")){vars.Log("Split: Up the Beanstalk [P2]");vars.peak_crooked_cliff=0;return true;}	
-	if(vars.peak_crystal_crater==1&&current.LevelName.Equals("memscan_level\npeak_crystal_crater")){vars.Log("Split: Willo at Ivory Crater [P3]");vars.peak_crystal_crater=0;return true;}	
-	if(vars.peak_filthy_flat==1&&current.LevelName.Equals("memscan_level\npeak_filthy_flat")){vars.Log("Split: Lighthouse [P4]");vars.peak_filthy_flat=0;return true;}	
-	if(vars.peak_frostpine_forest==1&&current.LevelName.Equals("memscan_level\npeak_frostpine_forest")){vars.Log("Split: Sootlingcaves [P5]");vars.peak_frostpine_forest=0;return true;}	
-	if(vars.peak_guano_grief==1&&current.LevelName.Equals("memscan_level\npeak_guano_grief")){vars.Log("Split: Guano Tower [P6]");vars.peak_guano_grief=0;return true;}	
-	if(vars.peak_ice_cold_idol==1&&current.LevelName.Equals("memscan_level\npeak_ice_cold_idol")){vars.Log("Split: Water-Fountain [P7]");vars.peak_ice_cold_idol=0;return true;}	
-	if(vars.peak_obtainium_oracle==1&&current.LevelName.Equals("memscan_level\npeak_obtainium_oracle")){vars.Log("Split: Ojva,Trivial Facts [P8]");vars.peak_obtainium_oracle=0;return true;}	
-	if(vars.peak_sky==1&&current.LevelName.Equals("memscan_level\npeak_sky")){vars.Log("Split: Ivory Beeline [P9]");vars.peak_sky=0;return true;}	
-	if(vars.peak_spacemonk_mystery==1&&current.LevelName.Equals("memscan_level\npeak_spacemonk_mystery")){vars.Log("Split: Spacemonk Spaceship [PA]");vars.peak_spacemonk_mystery=0;return true;}	
-	if(vars.peak_spider_fight==1&&current.LevelName.Equals("memscan_level\npeak_spider_fight")){vars.Log("Split: Boon Boss,Spider Fight [PB]");vars.peak_spider_fight=0;return true;}	
-	if(vars.peak_underside==1&&current.LevelName.Equals("memscan_level\npeak_underside")){vars.Log("Split: Fountain/Town-skip [PC]");vars.peak_underside=0;return true;}	
-	if(vars.spring_bubbly_basin==1&&current.LevelName.Equals("memscan_level\nspring_bubbly_basin")){vars.Log("Split: Hidden Sanctuary [S0]");vars.spring_bubbly_basin=0;return true;}	
-	if(vars.spring_cloudburst_cliffs==1&&current.LevelName.Equals("memscan_level\nspring_cloudburst_cliffs")){vars.Log("Split: Great Falls,Waterfall [S1]");vars.spring_cloudburst_cliffs=0;return true;}	
-	if(vars.spring_gangway_grotto==1&&current.LevelName.Equals("memscan_level\nspring_gangway_grotto")){vars.Log("Split: Skullgang Hideout [S2]");vars.spring_gangway_grotto=0;return true;}	
-	if(vars.spring_hazy_heaven==1&&current.LevelName.Equals("memscan_level\nspring_hazy_heaven")){vars.Log("Split: Marrow Hills Beeline [S3]");vars.spring_hazy_heaven=0;return true;}	
-	if(vars.spring_hidden_hotspring==1&&current.LevelName.Equals("memscan_level\nspring_hidden_hotspring")){vars.Log("Split: Blowing Head,Bling Bauble [S4]");vars.spring_hidden_hotspring=0;return true;}	
-	if(vars.spring_jailhouse_japes==1&&current.LevelName.Equals("memscan_level\nspring_jailhouse_japes")){vars.Log("Split: Way from Waterfall to Unders [S5]");vars.spring_jailhouse_japes=0;return true;}	
-	if(vars.spring_shoddy_shanty==1&&current.LevelName.Equals("memscan_level\nspring_shoddy_shanty")){vars.Log("Split: Church of the Space Monks [S6]");vars.spring_shoddy_shanty=0;return true;}	
-	if(vars.spring_sleek_slabs==1&&current.LevelName.Equals("memscan_level\nspring_sleek_slabs")){vars.Log("Split: Marrow Hills Waterfall to Hideout [S7]");vars.spring_sleek_slabs=0;return true;}	
-	if(vars.spring_tiny_broad==1&&current.LevelName.Equals("memscan_level\nspring_tiny_broad")){vars.Log("Split: Steam Slug [S8]");vars.spring_tiny_broad=0;return true;}	
-	if(vars.spring_tortoise_tunnel==1&&current.LevelName.Equals("memscan_level\nspring_tortoise_tunnel")){vars.Log("Split: Way to Unders and Up to Glowmoths [S9]");vars.spring_tortoise_tunnel=0;return true;}	
-	if(vars.spring_yokos_yam==1&&current.LevelName.Equals("memscan_level\nspring_yokos_yam")){vars.Log("Split: Spina Boss,Preasure Fight [Sa]");vars.spring_yokos_yam=0;return true;}}
+	if(vars.cave_abyssal_access==1&&current.LevelName.Equals("ms6\ncave_abyssal_access")){vars.Log("Split: Door Friends Bottom Left [C0]");vars.cave_abyssal_access=0;return true;}
+	if(vars.cave_beach_bottom==1&&current.LevelName.Equals("ms6\ncave_beach_bottom")){vars.Log("Split: Ocean Right [C1]");vars.cave_beach_bottom=0;return true;}
+	if(vars.cave_beaver_blockade==1&&current.LevelName.Equals("ms6\ncave_beaver_blockade")){vars.Log("Split: Door Friends [C2]");vars.cave_beaver_blockade=0;return true;}
+	if(vars.cave_boss==1&&current.LevelName.Equals("ms6\ncave_boss")){vars.Log("Split: Screetch [C3]");vars.cave_boss=0;return true;}
+	if(vars.cave_clammy_cenote==1&&current.LevelName.Equals("ms6\ncave_clammy_cenote")){vars.Log("Split: The Dolphin [C4]");vars.cave_clammy_cenote=0;return true;}
+	if(vars.cave_east_bay_shore==1&&current.LevelName.Equals("ms6\ncave_east_bay_shore")){vars.Log("Split: Beach Right [C5]");vars.cave_east_bay_shore=0;return true;}
+	if(vars.cave_temple_terror_entrance==1&&current.LevelName.Equals("ms6\ncave_temple_terror_entrance")){vars.Log("Split: Temple Trials Entrance [C6]");vars.cave_temple_terror_entrance=0;return true;}
+	if(vars.cave_temple_terror_lower==1&&current.LevelName.Equals("ms6\ncave_temple_terror_lower")){vars.Log("Split: Temple Trials [C7]");vars.cave_temple_terror_lower=0;return true;}
+	if(vars.cave_temple_terror_treasury==1&&current.LevelName.Equals("ms6\ncave_temple_terror_treasury")){vars.Log("Split: Temple Treasury [C8]");vars.cave_temple_terror_treasury=0;return true;}
+	if(vars.cave_temple_terror_upper==1&&current.LevelName.Equals("ms6\ncave_temple_terror_upper")){vars.Log("Split: God Egg [C9]");vars.cave_temple_terror_upper=0;return true;}
+	if(vars.cave_winding_waterway==1&&current.LevelName.Equals("ms6\ncave_winding_waterway")){vars.Log("Split: Stupid Wickerling [CA]");vars.cave_winding_waterway=0;return true;}		
+	if(vars.hub_bowel_bumping_left==1&&current.LevelName.Equals("ms6\nhub_bowel_bumping_left")){vars.Log("Split: Endboss [H0]");vars.hub_bowel_bumping_left=0;return true;}			
+	if(vars.hub_cliffside_creek==1&&current.LevelName.Equals("ms6\nhub_cliffside_creek")){vars.Log("Split: Fleek Hidden Diva [H1]");vars.hub_cliffside_creek=0;return true;}
+	if(vars.hub_festival==1&&current.LevelName.Equals("ms6\nhub_festival")){vars.Log("Split: Mokumas Pit [H2]");vars.hub_festival=0;return true;}
+	if(vars.hub_festival_sky==1&&current.LevelName.Equals("ms6\nhub_festival_sky")){vars.Log("Split: Ivory Beeline [H3]");vars.hub_festival_sky=0;return true;}
+	if(vars.hub_festival_upper==1&&current.LevelName.Equals("ms6\nhub_festival_upper")){vars.Log("Split: Ivory Beeline and Kazzo [H4]");vars.hub_festival_upper=0;return true;}
+	if(vars.hub_hermits_home==1&&current.LevelName.Equals("ms6\nhub_hermits_home")){vars.Log("Split: Sin [H5]");vars.hub_hermits_home=0;return true;}
+	if(vars.hub_island_express==1&&current.LevelName.Equals("ms6\nhub_island_express")){vars.Log("Split: Top of Tall Totem Tower [H6]");vars.hub_island_express=0;return true;}
+	if(vars.hub_left_lemur_lane==1&&current.LevelName.Equals("ms6\nhub_left_lemur_lane")){vars.Log("Split: Sandros Bridge [H7]");vars.hub_left_lemur_lane=0;return true;}
+	if(vars.hub_left_lofty_logo==1&&current.LevelName.Equals("ms6\nhub_left_lofty_logo")){vars.Log("Split: Titel Screen [H8]");vars.hub_left_lofty_logo=0;return true;}
+	if(vars.hub_marrow_maze==1&&current.LevelName.Equals("ms6\nhub_marrow_maze")){vars.Log("Split: Endboss Maze [H9]");vars.hub_marrow_maze=0;return true;}
+	if(vars.hub_obtainium_outland==1&&current.LevelName.Equals("ms6\nhub_obtainium_outland")){vars.Log("Split: Willos last Puzzlepiece [HA]");vars.hub_obtainium_outland=0;return true;}
+	if(vars.hub_soaring_stone==1&&current.LevelName.Equals("ms6\nhub_soaring_stone")){vars.Log("Split: Woods Beeline [HB]");vars.hub_soaring_stone=0;return true;}
+	if(vars.hub_village==1&&current.LevelName.Equals("ms6\nhub_village")){vars.Log("Split: Mokumana Village [HC]");vars.hub_village=0;return true;}
+	if(vars.hub_white_cliff==1&&current.LevelName.Equals("ms6\nhub_white_cliff")){vars.Log("Split: Dipperloaf [HD]");vars.hub_white_cliff=0;return true;}
+	if(vars.intro_landing==1&&current.LevelName.Equals("ms6\nintro_landing")){vars.Log("Split: Startarea [I0]");vars.intro_landing=0;return true;}
+	if(vars.intro_landing_creepy_cavern==1&&current.LevelName.Equals("ms6\nintro_landing_creepy_cavern")){vars.Log("Split: Fosfor Skip [I1]");vars.intro_landing_creepy_cavern=0;return true;}
+	if(vars.intro_landing_left==1&&current.LevelName.Equals("ms6\nintro_landing_left")){vars.Log("Split: Beach Left [I2]");vars.intro_landing_left=0;return true;}
+	if(vars.intro_landing_right==1&&current.LevelName.Equals("ms6\nintro_landing_right")){vars.Log("Split: Sootlinghouse End of intro [I3]");vars.intro_landing_right=0;return true;}
+	if(vars.intro_landing_upper==1&&current.LevelName.Equals("ms6\nintro_landing_upper")){vars.Log("Split: Noisemaker and Mushrooms [I4]");vars.intro_landing_upper=0;return true;}
+	if(vars.intro_muddled_morass==1&&current.LevelName.Equals("ms6\nintro_muddled_morass")){vars.Log("Split: Fosfors Cave [I5]");vars.intro_muddled_morass=0;return true;}
+	if(vars.intro_secret==1&&current.LevelName.Equals("ms6\nintro_secret")){vars.Log("Split: Ocean Left  [I6]");vars.intro_secret=0;return true;}
+	if(vars.island_ending_2==1&&current.LevelName.Equals("ms6\nisland_ending_2")){vars.Log("Split: True End [I7]");vars.island_ending_2=0;return true;}	
+	if(vars.jungle_canyon_caper==1&&current.LevelName.Equals("ms6\njungle_canyon_caper")){vars.Log("Split: Kickback Introduction [J0]");vars.jungle_canyon_caper=0;return true;}
+	if(vars.jungle_crammed_canopy==1&&current.LevelName.Equals("ms6\njungle_crammed_canopy")){vars.Log("Split: Poleskip to Secret Cave [J1]");vars.jungle_crammed_canopy=0;return true;}
+	if(vars.jungle_misty_meadow==1&&current.LevelName.Equals("ms6\njungle_misty_meadow")){vars.Log("Split: Meadow slugvacuum shed [J2]");vars.jungle_misty_meadow=0;return true;}
+	if(vars.jungle_mollusc_madness==1&&current.LevelName.Equals("ms6\njungle_mollusc_madness")){vars.Log("Split: Slug Introduction [J3]");vars.jungle_mollusc_madness=0;return true;}
+	if(vars.jungle_roots==1&&current.LevelName.Equals("ms6\njungle_roots")){vars.Log("Split: Juicery and introshoot [J4]");vars.jungle_roots=0;return true;}
+	if(vars.jungle_secluded_climb==1&&current.LevelName.Equals("ms6\njungle_secluded_climb")){vars.Log("Split: Climb to Waterfallskvader [J5]");vars.jungle_secluded_climb=0;return true;}
+	if(vars.jungle_slug_struggle==1&&current.LevelName.Equals("ms6\njungle_slug_struggle")){vars.Log("Split: Great Ape [J6]");vars.jungle_slug_struggle=0;return true;}
+	if(vars.jungle_spikey_stockade==1&&current.LevelName.Equals("ms6\njungle_spikey_stockade")){vars.Log("Split: Secret Cave [J7]");vars.jungle_spikey_stockade=0;return true;}
+	if(vars.jungle_tall_tall_tower==1&&current.LevelName.Equals("ms6\njungle_tall_tall_tower")){vars.Log("Split: Tall Totem Tower [J8]");vars.jungle_tall_tall_tower=0;return true;}
+	if(vars.jungle_willy==1&&current.LevelName.Equals("ms6\njungle_willy")){vars.Log("Split: Willo Queststart [J9]");vars.jungle_willy=0;return true;}	
+	if(vars.peak_aerial_ascent==1&&current.LevelName.Equals("ms6\npeak_aerial_ascent")){vars.Log("Split: Obtainum-ore Station [P0]");vars.peak_aerial_ascent=0;return true;}	
+	if(vars.peak_beanstalk_base==1&&current.LevelName.Equals("ms6\npeak_beanstalk_base")){vars.Log("Split: Basecamp,Beanstalk [P1]");vars.peak_beanstalk_base=0;return true;}	
+	if(vars.peak_crooked_cliff==1&&current.LevelName.Equals("ms6\npeak_crooked_cliff")){vars.Log("Split: Up the Beanstalk [P2]");vars.peak_crooked_cliff=0;return true;}	
+	if(vars.peak_crystal_crater==1&&current.LevelName.Equals("ms6\npeak_crystal_crater")){vars.Log("Split: Willo at Ivory Crater [P3]");vars.peak_crystal_crater=0;return true;}	
+	if(vars.peak_filthy_flat==1&&current.LevelName.Equals("ms6\npeak_filthy_flat")){vars.Log("Split: Lighthouse [P4]");vars.peak_filthy_flat=0;return true;}	
+	if(vars.peak_frostpine_forest==1&&current.LevelName.Equals("ms6\npeak_frostpine_forest")){vars.Log("Split: Sootlingcaves [P5]");vars.peak_frostpine_forest=0;return true;}	
+	if(vars.peak_guano_grief==1&&current.LevelName.Equals("ms6\npeak_guano_grief")){vars.Log("Split: Guano Tower [P6]");vars.peak_guano_grief=0;return true;}	
+	if(vars.peak_ice_cold_idol==1&&current.LevelName.Equals("ms6\npeak_ice_cold_idol")){vars.Log("Split: Water-Fountain [P7]");vars.peak_ice_cold_idol=0;return true;}	
+	if(vars.peak_obtainium_oracle==1&&current.LevelName.Equals("ms6\npeak_obtainium_oracle")){vars.Log("Split: Ojva,Trivial Facts [P8]");vars.peak_obtainium_oracle=0;return true;}	
+	if(vars.peak_sky==1&&current.LevelName.Equals("ms6\npeak_sky")){vars.Log("Split: Ivory Beeline [P9]");vars.peak_sky=0;return true;}	
+	if(vars.peak_spacemonk_mystery==1&&current.LevelName.Equals("ms6\npeak_spacemonk_mystery")){vars.Log("Split: Spacemonk Spaceship [PA]");vars.peak_spacemonk_mystery=0;return true;}	
+	if(vars.peak_spider_fight==1&&current.LevelName.Equals("ms6\npeak_spider_fight")){vars.Log("Split: Boon Boss,Spider Fight [PB]");vars.peak_spider_fight=0;return true;}	
+	if(vars.peak_underside==1&&current.LevelName.Equals("ms6\npeak_underside")){vars.Log("Split: Fountain/Town-skip [PC]");vars.peak_underside=0;return true;}	
+	if(vars.spring_bubbly_basin==1&&current.LevelName.Equals("ms6\nspring_bubbly_basin")){vars.Log("Split: Hidden Sanctuary [S0]");vars.spring_bubbly_basin=0;return true;}	
+	if(vars.spring_cloudburst_cliffs==1&&current.LevelName.Equals("ms6\nspring_cloudburst_cliffs")){vars.Log("Split: Great Falls,Waterfall [S1]");vars.spring_cloudburst_cliffs=0;return true;}	
+	if(vars.spring_gangway_grotto==1&&current.LevelName.Equals("ms6\nspring_gangway_grotto")){vars.Log("Split: Skullgang Hideout [S2]");vars.spring_gangway_grotto=0;return true;}	
+	if(vars.spring_hazy_heaven==1&&current.LevelName.Equals("ms6\nspring_hazy_heaven")){vars.Log("Split: Marrow Hills Beeline [S3]");vars.spring_hazy_heaven=0;return true;}	
+	if(vars.spring_hidden_hotspring==1&&current.LevelName.Equals("ms6\nspring_hidden_hotspring")){vars.Log("Split: Blowing Head,Bling Bauble [S4]");vars.spring_hidden_hotspring=0;return true;}	
+	if(vars.spring_jailhouse_japes==1&&current.LevelName.Equals("ms6\nspring_jailhouse_japes")){vars.Log("Split: Way from Waterfall to Unders [S5]");vars.spring_jailhouse_japes=0;return true;}	
+	if(vars.spring_shoddy_shanty==1&&current.LevelName.Equals("ms6\nspring_shoddy_shanty")){vars.Log("Split: Church of the Space Monks [S6]");vars.spring_shoddy_shanty=0;return true;}	
+	if(vars.spring_sleek_slabs==1&&current.LevelName.Equals("ms6\nspring_sleek_slabs")){vars.Log("Split: Marrow Hills Waterfall to Hideout [S7]");vars.spring_sleek_slabs=0;return true;}	
+	if(vars.spring_tiny_broad==1&&current.LevelName.Equals("ms6\nspring_tiny_broad")){vars.Log("Split: Steam Slug [S8]");vars.spring_tiny_broad=0;return true;}	
+	if(vars.spring_tortoise_tunnel==1&&current.LevelName.Equals("ms6\nspring_tortoise_tunnel")){vars.Log("Split: Way to Unders and Up to Glowmoths [S9]");vars.spring_tortoise_tunnel=0;return true;}	
+	if(vars.spring_yokos_yam==1&&current.LevelName.Equals("ms6\nspring_yokos_yam")){vars.Log("Split: Spina Boss,Preasure Fight [Sa]");vars.spring_yokos_yam=0;return true;}}
 //Items 
 	if(String.IsNullOrEmpty(current.GameItem)){}else{
 	if(vars.collectible>=0){
 		if(vars.countcollect==80){vars.collectible=0;vars.countcollect=0;}
-		if(vars.collectible==1){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:1")||current.GameItem.Equals("memscan_last_item_added\ncollectible:11")||current.GameItem.Equals("memscan_last_item_added\ncollectible:21")||current.GameItem.Equals("memscan_last_item_added\ncollectible:31")||current.GameItem.Equals("memscan_last_item_added\ncollectible:41")||current.GameItem.Equals("memscan_last_item_added\ncollectible:51")||current.GameItem.Equals("memscan_last_item_added\ncollectible:61")||current.GameItem.Equals("memscan_last_item_added\ncollectible:71")){
+		if(vars.collectible==1){if(current.GameItem.Equals("ms2\ncollectible:1")||current.GameItem.Equals("ms2\ncollectible:11")||current.GameItem.Equals("ms2\ncollectible:21")||current.GameItem.Equals("ms2\ncollectible:31")||current.GameItem.Equals("ms2\ncollectible:41")||current.GameItem.Equals("ms2\ncollectible:51")||current.GameItem.Equals("ms2\ncollectible:61")||current.GameItem.Equals("ms2\ncollectible:71")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=2;}}
-		if(vars.collectible==2){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:2")||current.GameItem.Equals("memscan_last_item_added\ncollectible:12")||current.GameItem.Equals("memscan_last_item_added\ncollectible:22")||current.GameItem.Equals("memscan_last_item_added\ncollectible:32")||current.GameItem.Equals("memscan_last_item_added\ncollectible:42")||current.GameItem.Equals("memscan_last_item_added\ncollectible:52")||current.GameItem.Equals("memscan_last_item_added\ncollectible:62")||current.GameItem.Equals("memscan_last_item_added\ncollectible:72")){
+		if(vars.collectible==2){if(current.GameItem.Equals("ms2\ncollectible:2")||current.GameItem.Equals("ms2\ncollectible:12")||current.GameItem.Equals("ms2\ncollectible:22")||current.GameItem.Equals("ms2\ncollectible:32")||current.GameItem.Equals("ms2\ncollectible:42")||current.GameItem.Equals("ms2\ncollectible:52")||current.GameItem.Equals("ms2\ncollectible:62")||current.GameItem.Equals("ms2\ncollectible:72")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=3;}}
-		if(vars.collectible==3){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:3")||current.GameItem.Equals("memscan_last_item_added\ncollectible:13")||current.GameItem.Equals("memscan_last_item_added\ncollectible:23")||current.GameItem.Equals("memscan_last_item_added\ncollectible:33")||current.GameItem.Equals("memscan_last_item_added\ncollectible:43")||current.GameItem.Equals("memscan_last_item_added\ncollectible:53")||current.GameItem.Equals("memscan_last_item_added\ncollectible:63")||current.GameItem.Equals("memscan_last_item_added\ncollectible:73")){
+		if(vars.collectible==3){if(current.GameItem.Equals("ms2\ncollectible:3")||current.GameItem.Equals("ms2\ncollectible:13")||current.GameItem.Equals("ms2\ncollectible:23")||current.GameItem.Equals("ms2\ncollectible:33")||current.GameItem.Equals("ms2\ncollectible:43")||current.GameItem.Equals("ms2\ncollectible:53")||current.GameItem.Equals("ms2\ncollectible:63")||current.GameItem.Equals("ms2\ncollectible:73")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=4;}}
-		if(vars.collectible==4){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:4")||current.GameItem.Equals("memscan_last_item_added\ncollectible:14")||current.GameItem.Equals("memscan_last_item_added\ncollectible:24")||current.GameItem.Equals("memscan_last_item_added\ncollectible:34")||current.GameItem.Equals("memscan_last_item_added\ncollectible:44")||current.GameItem.Equals("memscan_last_item_added\ncollectible:54")||current.GameItem.Equals("memscan_last_item_added\ncollectible:64")||current.GameItem.Equals("memscan_last_item_added\ncollectible:74")){
+		if(vars.collectible==4){if(current.GameItem.Equals("ms2\ncollectible:4")||current.GameItem.Equals("ms2\ncollectible:14")||current.GameItem.Equals("ms2\ncollectible:24")||current.GameItem.Equals("ms2\ncollectible:34")||current.GameItem.Equals("ms2\ncollectible:44")||current.GameItem.Equals("ms2\ncollectible:54")||current.GameItem.Equals("ms2\ncollectible:64")||current.GameItem.Equals("ms2\ncollectible:74")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=5;}}
-		if(vars.collectible==5){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:5")||current.GameItem.Equals("memscan_last_item_added\ncollectible:15")||current.GameItem.Equals("memscan_last_item_added\ncollectible:25")||current.GameItem.Equals("memscan_last_item_added\ncollectible:35")||current.GameItem.Equals("memscan_last_item_added\ncollectible:45")||current.GameItem.Equals("memscan_last_item_added\ncollectible:55")||current.GameItem.Equals("memscan_last_item_added\ncollectible:65")||current.GameItem.Equals("memscan_last_item_added\ncollectible:75")){
+		if(vars.collectible==5){if(current.GameItem.Equals("ms2\ncollectible:5")||current.GameItem.Equals("ms2\ncollectible:15")||current.GameItem.Equals("ms2\ncollectible:25")||current.GameItem.Equals("ms2\ncollectible:35")||current.GameItem.Equals("ms2\ncollectible:45")||current.GameItem.Equals("ms2\ncollectible:55")||current.GameItem.Equals("ms2\ncollectible:65")||current.GameItem.Equals("ms2\ncollectible:75")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=6;}}
-		if(vars.collectible==6){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:6")||current.GameItem.Equals("memscan_last_item_added\ncollectible:16")||current.GameItem.Equals("memscan_last_item_added\ncollectible:26")||current.GameItem.Equals("memscan_last_item_added\ncollectible:36")||current.GameItem.Equals("memscan_last_item_added\ncollectible:46")||current.GameItem.Equals("memscan_last_item_added\ncollectible:56")||current.GameItem.Equals("memscan_last_item_added\ncollectible:66")||current.GameItem.Equals("memscan_last_item_added\ncollectible:76")){
+		if(vars.collectible==6){if(current.GameItem.Equals("ms2\ncollectible:6")||current.GameItem.Equals("ms2\ncollectible:16")||current.GameItem.Equals("ms2\ncollectible:26")||current.GameItem.Equals("ms2\ncollectible:36")||current.GameItem.Equals("ms2\ncollectible:46")||current.GameItem.Equals("ms2\ncollectible:56")||current.GameItem.Equals("ms2\ncollectible:66")||current.GameItem.Equals("ms2\ncollectible:76")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=7;}}
-		if(vars.collectible==7){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:7")||current.GameItem.Equals("memscan_last_item_added\ncollectible:17")||current.GameItem.Equals("memscan_last_item_added\ncollectible:27")||current.GameItem.Equals("memscan_last_item_added\ncollectible:37")||current.GameItem.Equals("memscan_last_item_added\ncollectible:47")||current.GameItem.Equals("memscan_last_item_added\ncollectible:57")||current.GameItem.Equals("memscan_last_item_added\ncollectible:67")||current.GameItem.Equals("memscan_last_item_added\ncollectible:77")){
+		if(vars.collectible==7){if(current.GameItem.Equals("ms2\ncollectible:7")||current.GameItem.Equals("ms2\ncollectible:17")||current.GameItem.Equals("ms2\ncollectible:27")||current.GameItem.Equals("ms2\ncollectible:37")||current.GameItem.Equals("ms2\ncollectible:47")||current.GameItem.Equals("ms2\ncollectible:57")||current.GameItem.Equals("ms2\ncollectible:67")||current.GameItem.Equals("ms2\ncollectible:77")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=8;}}
-		if(vars.collectible==8){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:8")||current.GameItem.Equals("memscan_last_item_added\ncollectible:18")||current.GameItem.Equals("memscan_last_item_added\ncollectible:28")||current.GameItem.Equals("memscan_last_item_added\ncollectible:38")||current.GameItem.Equals("memscan_last_item_added\ncollectible:48")||current.GameItem.Equals("memscan_last_item_added\ncollectible:58")||current.GameItem.Equals("memscan_last_item_added\ncollectible:68")||current.GameItem.Equals("memscan_last_item_added\ncollectible:78")){
+		if(vars.collectible==8){if(current.GameItem.Equals("ms2\ncollectible:8")||current.GameItem.Equals("ms2\ncollectible:18")||current.GameItem.Equals("ms2\ncollectible:28")||current.GameItem.Equals("ms2\ncollectible:38")||current.GameItem.Equals("ms2\ncollectible:48")||current.GameItem.Equals("ms2\ncollectible:58")||current.GameItem.Equals("ms2\ncollectible:68")||current.GameItem.Equals("ms2\ncollectible:78")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=9;}}
-		if(vars.collectible==9){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:9")||current.GameItem.Equals("memscan_last_item_added\ncollectible:19")||current.GameItem.Equals("memscan_last_item_added\ncollectible:29")||current.GameItem.Equals("memscan_last_item_added\ncollectible:39")||current.GameItem.Equals("memscan_last_item_added\ncollectible:49")||current.GameItem.Equals("memscan_last_item_added\ncollectible:59")||current.GameItem.Equals("memscan_last_item_added\ncollectible:69")||current.GameItem.Equals("memscan_last_item_added\ncollectible:79")){
+		if(vars.collectible==9){if(current.GameItem.Equals("ms2\ncollectible:9")||current.GameItem.Equals("ms2\ncollectible:19")||current.GameItem.Equals("ms2\ncollectible:29")||current.GameItem.Equals("ms2\ncollectible:39")||current.GameItem.Equals("ms2\ncollectible:49")||current.GameItem.Equals("ms2\ncollectible:59")||current.GameItem.Equals("ms2\ncollectible:69")||current.GameItem.Equals("ms2\ncollectible:79")){
 			vars.countcollect=vars.countcollect+1;vars.collectible=10;}}
-		if(vars.collectible==10){if(current.GameItem.Equals("memscan_last_item_added\ncollectible:10")||current.GameItem.Equals("memscan_last_item_added\ncollectible:20")||current.GameItem.Equals("memscan_last_item_added\ncollectible:30")||current.GameItem.Equals("memscan_last_item_added\ncollectible:40")||current.GameItem.Equals("memscan_last_item_added\ncollectible:50")||current.GameItem.Equals("memscan_last_item_added\ncollectible:60")||current.GameItem.Equals("memscan_last_item_added\ncollectible:70")||current.GameItem.Equals("memscan_last_item_added\ncollectible:80")){
-			vars.countcollect=vars.countcollect+1;vars.collectible=1;vars.Log("Split: Wickerling 10/20/30/40/50/60/70/80");return true;}}}
+		if(vars.collectible==10){if(current.GameItem.Equals("ms2\ncollectible:10")||current.GameItem.Equals("ms2\ncollectible:20")||current.GameItem.Equals("ms2\ncollectible:30")||current.GameItem.Equals("ms2\ncollectible:40")||current.GameItem.Equals("ms2\ncollectible:50")||current.GameItem.Equals("ms2\ncollectible:60")||current.GameItem.Equals("ms2\ncollectible:70")||current.GameItem.Equals("ms2\ncollectible:80")){
+			vars.countcollect=vars.countcollect+1;vars.collectible=1;vars.Log("Split: 10 Wickerlinge");return true;}}}
 	if(vars.nugget>=1){
-		if(vars.nugget==1&&current.GameItem.Equals("memscan_last_item_added\nnugget:1")){vars.Log("Split: Smashed piece of Statue 1");vars.nugget=2;return true;}
-		if(vars.nugget==2&&current.GameItem.Equals("memscan_last_item_added\nnugget:2")){vars.Log("Split: Smashed piece of Statue 2");vars.nugget=3;return true;}
-		if(vars.nugget==3&&current.GameItem.Equals("memscan_last_item_added\nnugget:3")){vars.Log("Split: Smashed piece of Statue 3");vars.nugget=4;return true;}
-		if(vars.nugget==4&&current.GameItem.Equals("memscan_last_item_added\nnugget:4")){vars.Log("Split: Smashed piece of Statue 4");vars.nugget=0;return true;}}
+		if(vars.nugget==1&&current.GameItem.Equals("ms2\nnugget:1")){vars.Log("Split: Smashed piece of Statue 1");vars.nugget=2;return true;}
+		if(vars.nugget==2&&current.GameItem.Equals("ms2\nnugget:2")){vars.Log("Split: Smashed piece of Statue 2");vars.nugget=3;return true;}
+		if(vars.nugget==3&&current.GameItem.Equals("ms2\nnugget:3")){vars.Log("Split: Smashed piece of Statue 3");vars.nugget=4;return true;}
+		if(vars.nugget==4&&current.GameItem.Equals("ms2\nnugget:4")){vars.Log("Split: Smashed piece of Statue 4");vars.nugget=0;return true;}}
 	if(vars.tadpole>=1){
 		if(vars.counttadpole==8){vars.tadpole=0;vars.counttadpole=0;}
-		if(current.GameItem.Equals("memscan_last_item_removed\ntadpole:0")){vars.tadpole=1;}
-		if(vars.tadpole==1&&current.GameItem.Equals("memscan_last_item_added\ntadpole:1")){vars.Log("Split: Tadpole 1");vars.counttadpole=vars.counttadpole+1;vars.tadpole=2;return true;}
-		if(vars.tadpole==2&&current.GameItem.Equals("memscan_last_item_added\ntadpole:2")){vars.Log("Split: Tadpole 2");vars.counttadpole=vars.counttadpole+1;vars.tadpole=3;return true;}
-		if(vars.tadpole==3&&current.GameItem.Equals("memscan_last_item_added\ntadpole:3")){vars.Log("Split: Tadpole 3");vars.counttadpole=vars.counttadpole+1;vars.tadpole=4;return true;}
-		if(vars.tadpole==4&&current.GameItem.Equals("memscan_last_item_added\ntadpole:4")){vars.Log("Split: Tadpole 4");vars.counttadpole=vars.counttadpole+1;vars.tadpole=5;return true;}
-		if(vars.tadpole==5&&current.GameItem.Equals("memscan_last_item_added\ntadpole:5")){vars.Log("Split: Tadpole 5");vars.counttadpole=vars.counttadpole+1;vars.tadpole=6;return true;}
-		if(vars.tadpole==6&&current.GameItem.Equals("memscan_last_item_added\ntadpole:6")){vars.Log("Split: Tadpole 6");vars.counttadpole=vars.counttadpole+1;vars.tadpole=7;return true;}
-		if(vars.tadpole==7&&current.GameItem.Equals("memscan_last_item_added\ntadpole:7")){vars.Log("Split: Tadpole 7");vars.counttadpole=vars.counttadpole+1;vars.tadpole=8;return true;}
-		if(vars.tadpole==8&&current.GameItem.Equals("memscan_last_item_added\ntadpole:8")){vars.Log("Split: Tadpole 8");vars.counttadpole=vars.counttadpole+1;return true;}}
+		if(current.GameItem.Equals("ms3\ntadpole:0")){vars.tadpole=1;}
+		if(vars.tadpole==1&&current.GameItem.Equals("ms2\ntadpole:1")){vars.Log("Split: Tadpole 1");vars.counttadpole=vars.counttadpole+1;vars.tadpole=2;return true;}
+		if(vars.tadpole==2&&current.GameItem.Equals("ms2\ntadpole:2")){vars.Log("Split: Tadpole 2");vars.counttadpole=vars.counttadpole+1;vars.tadpole=3;return true;}
+		if(vars.tadpole==3&&current.GameItem.Equals("ms2\ntadpole:3")){vars.Log("Split: Tadpole 3");vars.counttadpole=vars.counttadpole+1;vars.tadpole=4;return true;}
+		if(vars.tadpole==4&&current.GameItem.Equals("ms2\ntadpole:4")){vars.Log("Split: Tadpole 4");vars.counttadpole=vars.counttadpole+1;vars.tadpole=5;return true;}
+		if(vars.tadpole==5&&current.GameItem.Equals("ms2\ntadpole:5")){vars.Log("Split: Tadpole 5");vars.counttadpole=vars.counttadpole+1;vars.tadpole=6;return true;}
+		if(vars.tadpole==6&&current.GameItem.Equals("ms2\ntadpole:6")){vars.Log("Split: Tadpole 6");vars.counttadpole=vars.counttadpole+1;vars.tadpole=7;return true;}
+		if(vars.tadpole==7&&current.GameItem.Equals("ms2\ntadpole:7")){vars.Log("Split: Tadpole 7");vars.counttadpole=vars.counttadpole+1;vars.tadpole=8;return true;}
+		if(vars.tadpole==8&&current.GameItem.Equals("ms2\ntadpole:8")){vars.Log("Split: Tadpole 8");vars.counttadpole=vars.counttadpole+1;return true;}}
 	if(vars.traitor>=1){
 		if(vars.counttraitor==4){vars.counttraitor=0;vars.traitor=0;}
-		if(current.GameItem.Equals("memscan_last_item_removed\ntraitor_spirit:0")){vars.traitor=1;}
-		if(vars.traitor==1&&current.GameItem.Equals("memscan_last_item_added\ntraitor_spirit:1")){vars.Log("Split: Traitor Spirit 1");vars.counttraitor=vars.counttraitor+1;vars.traitor=2;return true;}
-		if(vars.traitor==2&&current.GameItem.Equals("memscan_last_item_added\ntraitor_spirit:2")){vars.Log("Split: Traitor Spirit 2");vars.counttraitor=vars.counttraitor+1;vars.traitor=3;return true;}
-		if(vars.traitor==3&&current.GameItem.Equals("memscan_last_item_added\ntraitor_spirit:3")){vars.Log("Split: Traitor Spirit 3");vars.counttraitor=vars.counttraitor+1;vars.traitor=4;return true;}
-		if(vars.traitor==4&&current.GameItem.Equals("memscan_last_item_added\ntraitor_spirit:4")){vars.Log("Split: Traitor Spirit 4");vars.counttraitor=vars.counttraitor+1;;return true;}}
+		if(current.GameItem.Equals("ms3\ntraitor_spirit:0")){vars.traitor=1;}
+		if(vars.traitor==1&&current.GameItem.Equals("ms2\ntraitor_spirit:1")){vars.Log("Split: Traitor Spirit 1");vars.counttraitor=vars.counttraitor+1;vars.traitor=2;return true;}
+		if(vars.traitor==2&&current.GameItem.Equals("ms2\ntraitor_spirit:2")){vars.Log("Split: Traitor Spirit 2");vars.counttraitor=vars.counttraitor+1;vars.traitor=3;return true;}
+		if(vars.traitor==3&&current.GameItem.Equals("ms2\ntraitor_spirit:3")){vars.Log("Split: Traitor Spirit 3");vars.counttraitor=vars.counttraitor+1;vars.traitor=4;return true;}
+		if(vars.traitor==4&&current.GameItem.Equals("ms2\ntraitor_spirit:4")){vars.Log("Split: Traitor Spirit 4");vars.counttraitor=vars.counttraitor+1;;return true;}}
 	if(vars.dustbunny>=1){
 		if(vars.countdustbunny==6){vars.countdustbunny=0;vars.dustbunny=0;}
-		if(current.GameItem.Equals("memscan_last_item_removed\ndustbunny_dirty:0")){vars.dustbunny=1;}
-		if(vars.dustbunny==1&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:1")){vars.Log("Split: Sootling 1");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=2;return true;}
-		if(vars.dustbunny==2&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:2")){vars.Log("Split: Sootling 2");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=3;return true;}
-		if(vars.dustbunny==3&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:3")){vars.Log("Split: Sootling 3");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=4;return true;}
-		if(vars.dustbunny==4&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:4")){vars.Log("Split: Sootling 4");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=5;return true;}
-		if(vars.dustbunny==5&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:5")){vars.Log("Split: Sootling 5");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=6;return true;}
-		if(vars.dustbunny==6&&current.GameItem.Equals("memscan_last_item_added\ndustbunny_dirty:6")){vars.Log("Split: Sootling 6");vars.countdustbunny=vars.countdustbunny+1;return true;}}
+		if(current.GameItem.Equals("ms3\ndustbunny_dirty:0")){vars.dustbunny=1;}
+		if(vars.dustbunny==1&&current.GameItem.Equals("ms2\ndustbunny_dirty:1")){vars.Log("Split: Sootling 1");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=2;return true;}
+		if(vars.dustbunny==2&&current.GameItem.Equals("ms2\ndustbunny_dirty:2")){vars.Log("Split: Sootling 2");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=3;return true;}
+		if(vars.dustbunny==3&&current.GameItem.Equals("ms2\ndustbunny_dirty:3")){vars.Log("Split: Sootling 3");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=4;return true;}
+		if(vars.dustbunny==4&&current.GameItem.Equals("ms2\ndustbunny_dirty:4")){vars.Log("Split: Sootling 4");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=5;return true;}
+		if(vars.dustbunny==5&&current.GameItem.Equals("ms2\ndustbunny_dirty:5")){vars.Log("Split: Sootling 5");vars.countdustbunny=vars.countdustbunny+1;vars.dustbunny=6;return true;}
+		if(vars.dustbunny==6&&current.GameItem.Equals("ms2\ndustbunny_dirty:6")){vars.Log("Split: Sootling 6");vars.countdustbunny=vars.countdustbunny+1;return true;}}
 	if(vars.wallet>=1){
-		if(vars.wallet==1&&current.GameItem.Equals("memscan_last_item_added\nwallet:1")){vars.Log("Split: Wallet Upgrades 1");vars.wallet=2;return true;}
-		if(vars.wallet==2&&current.GameItem.Equals("memscan_last_item_added\nwallet:2")){vars.Log("Split: Wallet Upgrades 2");vars.wallet=3;return true;}
-		if(vars.wallet==3&&current.GameItem.Equals("memscan_last_item_added\nwallet:3")){vars.Log("Split: Wallet Upgrades 3");vars.wallet=4;return true;}
-		if(vars.wallet==4&&current.GameItem.Equals("memscan_last_item_added\nwallet:4")){vars.Log("Split: Wallet Upgrades 4");vars.wallet=5;return true;}
-		if(vars.wallet==5&&current.GameItem.Equals("memscan_last_item_added\nwallet:5")){vars.Log("Split: Wallet Upgrades 5");vars.wallet=6;return true;}
-		if(vars.wallet==6&&current.GameItem.Equals("memscan_last_item_added\nwallet:6")){vars.Log("Split: Wallet Upgrades 6");vars.wallet=7;return true;}
-		if(vars.wallet==7&&current.GameItem.Equals("memscan_last_item_added\nwallet:7")){vars.Log("Split: Wallet Upgrades 7");vars.wallet=8;return true;}
-		if(vars.wallet==8&&current.GameItem.Equals("memscan_last_item_added\nwallet:8")){vars.Log("Split: Wallet Upgrades 8");vars.wallet=9;return true;}
-		if(vars.wallet==9&&current.GameItem.Equals("memscan_last_item_added\nwallet:9")){vars.Log("Split: Wallet Upgrades 9");vars.wallet=10;return true;}
-		if(vars.wallet==10&&current.GameItem.Equals("memscan_last_item_added\nwallet:10")){vars.Log("Split: Wallet Upgrades 10");vars.wallet=0;return true;}}
-	if(vars.abilities_map==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/map:1")){vars.Log("Split: Map");vars.abilities_map=0;return true;}
-	if(vars.abilities_partyhorn==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/partyhorn:1")){vars.Log("Split: Noismaker");vars.abilities_partyhorn=0;return true;}
-	if(vars.abilities_mailbag==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/mailbag:1")){vars.Log("Split: Mail bag");vars.abilities_mailbag=0;return true;}
-	if(vars.abilities_speed==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/speed:1")){vars.Log("Split: Grand Postmaster Badge");vars.abilities_speed=0;return true;}
-	if(vars.abilities_double_fruit==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/double_fruit:1")){vars.Log("Split: Boon of Plenty!");vars.abilities_double_fruit=0;return true;}
-	if(vars.abilities_slug_vaccum==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/slug_vaccum:1")){vars.Log("Split: Slug Vacuum");vars.abilities_slug_vaccum=0;return true;}
-	if(vars.abilities_slug_upgrade==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/slug_upgrade:1")){vars.Log("Split: Slug Vacuum Deluxe");vars.abilities_slug_upgrade=0;return true;}	
-	if(vars.abilities_kickback==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/kickback:1")){vars.Log("Split: Kickback");vars.abilities_kickback=0;return true;}
-		if(vars.abilities_kickback2==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/kickback:2")){vars.Log("Split: Kickback 2");vars.abilities_kickback2=0;return true;}
-		if(vars.abilities_kickback2==1&&current.GameItem.Equals("memscan_last_item_removed\nabilities/kickback:0")){vars.abilities_kickback2=0;vars.kickback2=1;}
-			if(vars.kickback2==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/kickback:1")){vars.Log("Split: Kickback 2");vars.kickback2=0;return true;}	
-	if(vars.abilities_dive==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/dive:1")){vars.Log("Split: Dive Fish");vars.abilities_dive=0;return true;}
-	if(vars.abilities_dive_speed==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/dive_speed:1")){vars.Log("Split: Fast Dive Fish");vars.abilities_dive_speed=0;return true;}
-	if(vars.abilities_hook==1&&current.GameItem.Equals("memscan_last_item_added\nabilities/hook:1")){vars.Log("Split: Sootling on a Leash");vars.abilities_hook=0;return true;}
-	if(vars.sootling_leash==1&&current.GameItem.Equals("memscan_last_item_added\nsootling_leash:1")){vars.Log("Split: Sootling Leash");vars.sootling_leash=0;return true;}
-	if(vars.bucket_empty==1&&current.GameItem.Equals("memscan_last_item_added\nbucket_empty:1")){vars.Log("Split: Empty Bucket");vars.bucket_empty=0;return true;}
-	if(vars.bucket_full==1&&current.GameItem.Equals("memscan_last_item_added\nbucket_full:1")){vars.Log("Split: Bucket of Spring Water");vars.bucket_full=0;return true;}
-	if(vars.guano==1&&current.GameItem.Equals("memscan_last_item_added\nguano:1")){vars.Log("Split: Guano");vars.guano=0;return true;}
-	if(vars.seed_pod==1&&current.GameItem.Equals("memscan_last_item_added\nseed_pod:1")){vars.Log("Split: Seed Pod");vars.seed_pod=0;return true;}
-	if(vars.bluekey==1&&current.GameItem.Equals("memscan_last_item_added\nbluekey:1")){vars.Log("Split: Blue Key");vars.bluekey=0;return true;}
-	if(vars.greenkey==1&&current.GameItem.Equals("memscan_last_item_added\ngreenkey:1")){vars.Log("Split: Green Key");vars.greenkey=0;return true;}
-	if(vars.spring_key==1&&current.GameItem.Equals("memscan_last_item_added\nspring_key:1")){vars.Log("Split: Key to the Underbelly");vars.spring_key=0;return true;}
-	if(vars.nim_key==1&&current.GameItem.Equals("memscan_last_item_added\nnim_key:1")){vars.Log("Split: Nims Key");vars.nim_key=0;return true;}
-	if(vars.instrument_pile==1&&current.GameItem.Equals("memscan_last_item_added\ninstrument_pile:1")){vars.Log("Split: Ceremony Instruments");vars.instrument_pile=0;return true;}
-	if(vars.toolbox==1&&current.GameItem.Equals("memscan_last_item_added\ntoolbox:1")){vars.Log("Split: Toolbox");vars.toolbox=0;return true;}
-	if(vars.sad_spider==1&&current.GameItem.Equals("memscan_last_item_added\nsad_spider:1")){vars.Log("Split: Sad Spiderling");vars.sad_spider=0;return true;}
-	if(vars.postal_badge==1&&current.GameItem.Equals("memscan_last_item_added\npostal_badge:1")){vars.Log("Split: Old Postal Badge");vars.postal_badge=0;return true;}
-	if(vars.treasure_map==1&&current.GameItem.Equals("memscan_last_item_added\ntreasure_map:1")){vars.Log("Split: Treasure Map");vars.treasure_map=0;return true;}
-	if(vars.mushroom_2==1&&current.GameItem.Equals("memscan_last_item_added\nmushroom_2:1")){vars.Log("Split: Juicy Cove Mushroom");vars.mushroom_2=0;return true;}
-	if(vars.mushroom_3==1&&current.GameItem.Equals("memscan_last_item_added\nmushroom_3:1")){vars.Log("Split: Poison Toadstool");vars.mushroom_3=0;return true;}
-	if(vars.powerups_skvader_1==1&&current.GameItem.Equals("memscan_last_item_added\npowerups/skvader_1:1")){vars.Log("Split: Skvader");vars.powerups_skvader_1=0;return true;}
-	if(vars.powerups_skvader_2==1&&current.GameItem.Equals("memscan_last_item_added\npowerups/skvader_2:1")){vars.Log("Split: Fat Skvader");vars.powerups_skvader_2=0;return true;}
-	if(vars.package_3==1&&current.GameItem.Equals("memscan_last_item_added\npackage_3:1")){vars.Log("Split: Overdue Package for Quinbe");vars.package_3=0;return true;}
-	if(vars.package_2==1&&current.GameItem.Equals("memscan_last_item_added\npackage_2:1")){vars.Log("Split: Overdue Package for Sin");vars.package_2=0;return true;}
-	if(vars.package_1==1&&current.GameItem.Equals("memscan_last_item_added\npackage_1:1")){vars.Log("Split: Overdue Package for Treek");vars.package_1=0;return true;}
-	if(vars.idol1==1&&current.GameItem.Equals("memscan_last_item_added\nidol1:1")){vars.Log("Split: Statue Chunk");vars.idol1=0;return true;}
-	if(vars.idol2==1&&current.GameItem.Equals("memscan_last_item_added\nidol2:1")){vars.Log("Split: Statue Piece 2");vars.idol2=0;return true;}
-	if(vars.idol3==1&&current.GameItem.Equals("memscan_last_item_added\nidol3:1")){vars.Log("Split: Statue Piece 3");vars.idol3=0;return true;}
-	if(vars.idol4==1&&current.GameItem.Equals("memscan_last_item_added\nidol4:1")){vars.Log("Split: Statue Piece 4");vars.idol4=0;return true;}
-	if(vars.spores_1==1&&current.GameItem.Equals("memscan_last_item_added\nspores_1:1")){vars.Log("Split: Light Spores");vars.spores_1=0;return true;}
-	if(vars.spores_2==1&&current.GameItem.Equals("memscan_last_item_added\nspores_2:1")){vars.Log("Split: Dry Spores");vars.spores_2=0;return true;}
-	if(vars.spores_3==1&&current.GameItem.Equals("memscan_last_item_added\nspores_3:1")){vars.Log("Split: Damp Spores");vars.spores_3=0;return true;}
-	if(vars.spores_4==1&&current.GameItem.Equals("memscan_last_item_added\nspores_4:1")){vars.Log("Split: Annoyed Spores");vars.spores_4=0;return true;}
-	if(vars.spores_5==1&&current.GameItem.Equals("memscan_last_item_added\nspores_5:1")){vars.Log("Split: Frosty Spores");vars.spores_5=0;return true;}
-	if(vars.tracker_caves==1&&current.GameItem.Equals("memscan_last_item_added\ntracker_caves:1")){vars.Log("Split: Cave Tracker");vars.tracker_caves=0;return true;}
-	if(vars.tracker_jungle==1&&current.GameItem.Equals("memscan_last_item_added\ntracker_jungle:1")){vars.Log("Split: Jungle Tracker");vars.tracker_jungle=0;return true;}
-	if(vars.tracker_peak==1&&current.GameItem.Equals("memscan_last_item_added\ntracker_peak:1")){vars.Log("Split: Peak Tracker");vars.tracker_peak=0;return true;}
-	if(vars.tracker_springs==1&&current.GameItem.Equals("memscan_last_item_added\ntracker_springs:1")){vars.Log("Split: Springs Tracker");vars.tracker_springs=0;return true;}
-	if(vars.tracker_scarabs==1&&current.GameItem.Equals("memscan_last_item_added\ntracker_scarabs:1")){vars.Log("Split: Scarabs Tracker");vars.tracker_scarabs=0;return true;}
-	if(vars.skins_skin_1==1&&current.GameItem.Equals("memscan_last_item_added\nskins/skin_1:1")){vars.Log("Split: Bling Sprinkles");vars.skins_skin_1=0;return true;}
-	if(vars.skins_skin_2==1&&current.GameItem.Equals("memscan_last_item_added\nskins/skin_2:1")){vars.Log("Split: Creepy Sprinkles");vars.skins_skin_2=0;return true;}
-	if(vars.skins_skin_3==1&&current.GameItem.Equals("memscan_last_item_added\nskins/skin_3:1")){vars.Log("Split: Deadly Sprinkles");vars.skins_skin_3=0;return true;}
-	if(vars.skins_skin_4==1&&current.GameItem.Equals("memscan_last_item_added\nskins/skin_4:1")){vars.Log("Split: Crimson Sprinkles");vars.skins_skin_4=0;return true;}
-	if(vars.skins_skin_5==1&&current.GameItem.Equals("memscan_last_item_added\nskins/skin_5:1")){vars.Log("Split: Sweet Sprinkles");vars.skins_skin_5=0;return true;}}
+		if(vars.wallet==1&&current.GameItem.Equals("ms2\nwallet:1")){vars.Log("Split: Wallet Upgrades 1");vars.wallet=2;return true;}
+		if(vars.wallet==2&&current.GameItem.Equals("ms2\nwallet:2")){vars.Log("Split: Wallet Upgrades 2");vars.wallet=3;return true;}
+		if(vars.wallet==3&&current.GameItem.Equals("ms2\nwallet:3")){vars.Log("Split: Wallet Upgrades 3");vars.wallet=4;return true;}
+		if(vars.wallet==4&&current.GameItem.Equals("ms2\nwallet:4")){vars.Log("Split: Wallet Upgrades 4");vars.wallet=5;return true;}
+		if(vars.wallet==5&&current.GameItem.Equals("ms2\nwallet:5")){vars.Log("Split: Wallet Upgrades 5");vars.wallet=6;return true;}
+		if(vars.wallet==6&&current.GameItem.Equals("ms2\nwallet:6")){vars.Log("Split: Wallet Upgrades 6");vars.wallet=7;return true;}
+		if(vars.wallet==7&&current.GameItem.Equals("ms2\nwallet:7")){vars.Log("Split: Wallet Upgrades 7");vars.wallet=8;return true;}
+		if(vars.wallet==8&&current.GameItem.Equals("ms2\nwallet:8")){vars.Log("Split: Wallet Upgrades 8");vars.wallet=9;return true;}
+		if(vars.wallet==9&&current.GameItem.Equals("ms2\nwallet:9")){vars.Log("Split: Wallet Upgrades 9");vars.wallet=10;return true;}
+		if(vars.wallet==10&&current.GameItem.Equals("ms2\nwallet:10")){vars.Log("Split: Wallet Upgrades 10");vars.wallet=0;return true;}}
+	if(vars.abilities_map==1&&current.GameItem.Equals("ms2\nabilities/map:1")){vars.Log("Split: Map");vars.abilities_map=0;return true;}
+	if(vars.abilities_partyhorn==1&&current.GameItem.Equals("ms2\nabilities/partyhorn:1")){vars.Log("Split: Noismaker");vars.abilities_partyhorn=0;return true;}
+	if(vars.abilities_mailbag==1&&current.GameItem.Equals("ms2\nabilities/mailbag:1")){vars.Log("Split: Mail bag");vars.abilities_mailbag=0;return true;}
+	if(vars.abilities_speed==1&&current.GameItem.Equals("ms2\nabilities/speed:1")){vars.Log("Split: Grand Postmaster Badge");vars.abilities_speed=0;return true;}
+	if(vars.abilities_double_fruit==1&&current.GameItem.Equals("ms2\nabilities/double_fruit:1")){vars.Log("Split: Boon of Plenty!");vars.abilities_double_fruit=0;return true;}
+	if(vars.abilities_slug_vaccum==1&&current.GameItem.Equals("ms2\nabilities/slug_vaccum:1")){vars.Log("Split: Slug Vacuum");vars.abilities_slug_vaccum=0;return true;}
+	if(vars.abilities_slug_upgrade==1&&current.GameItem.Equals("ms2\nabilities/slug_upgrade:1")){vars.Log("Split: Slug Vacuum Deluxe");vars.abilities_slug_upgrade=0;return true;}	
+	if(vars.abilities_kickback==1&&current.GameItem.Equals("ms2\nabilities/kickback:1")){vars.Log("Split: Kickback");vars.abilities_kickback=0;return true;}
+		if(vars.abilities_kickback2==1&&current.GameItem.Equals("ms2\nabilities/kickback:2")){vars.Log("Split: Kickback 2");vars.abilities_kickback2=0;return true;}
+		if(vars.abilities_kickback2==1&&current.GameItem.Equals("ms3\nabilities/kickback:0")){vars.abilities_kickback2=0;vars.kickback2=1;}
+			if(vars.kickback2==1&&current.GameItem.Equals("ms2\nabilities/kickback:1")){vars.Log("Split: Kickback 2");vars.kickback2=0;return true;}	
+	if(vars.abilities_dive==1&&current.GameItem.Equals("ms2\nabilities/dive:1")){vars.Log("Split: Dive Fish");vars.abilities_dive=0;return true;}
+	if(vars.abilities_dive_speed==1&&current.GameItem.Equals("ms2\nabilities/dive_speed:1")){vars.Log("Split: Fast Dive Fish");vars.abilities_dive_speed=0;return true;}
+	if(vars.abilities_hook==1&&current.GameItem.Equals("ms2\nabilities/hook:1")){vars.Log("Split: Sootling on a Leash");vars.abilities_hook=0;return true;}
+	if(vars.sootling_leash==1&&current.GameItem.Equals("ms2\nsootling_leash:1")){vars.Log("Split: Sootling Leash");vars.sootling_leash=0;return true;}
+	if(vars.bucket_empty==1&&current.GameItem.Equals("ms2\nbucket_empty:1")){vars.Log("Split: Empty Bucket");vars.bucket_empty=0;return true;}
+	if(vars.bucket_full==1&&current.GameItem.Equals("ms2\nbucket_full:1")){vars.Log("Split: Bucket of Spring Water");vars.bucket_full=0;return true;}
+	if(vars.guano==1&&current.GameItem.Equals("ms2\nguano:1")){vars.Log("Split: Guano");vars.guano=0;return true;}
+	if(vars.seed_pod==1&&current.GameItem.Equals("ms2\nseed_pod:1")){vars.Log("Split: Seed Pod");vars.seed_pod=0;return true;}
+	if(vars.bluekey==1&&current.GameItem.Equals("ms2\nbluekey:1")){vars.Log("Split: Blue Key");vars.bluekey=0;return true;}
+	if(vars.greenkey==1&&current.GameItem.Equals("ms2\ngreenkey:1")){vars.Log("Split: Green Key");vars.greenkey=0;return true;}
+	if(vars.spring_key==1&&current.GameItem.Equals("ms2\nspring_key:1")){vars.Log("Split: Key to the Underbelly");vars.spring_key=0;return true;}
+	if(vars.nim_key==1&&current.GameItem.Equals("ms2\nnim_key:1")){vars.Log("Split: Nims Key");vars.nim_key=0;return true;}
+	if(vars.instrument_pile==1&&current.GameItem.Equals("ms2\ninstrument_pile:1")){vars.Log("Split: Ceremony Instruments");vars.instrument_pile=0;return true;}
+	if(vars.toolbox==1&&current.GameItem.Equals("ms2\ntoolbox:1")){vars.Log("Split: Toolbox");vars.toolbox=0;return true;}
+	if(vars.sad_spider==1&&current.GameItem.Equals("ms2\nsad_spider:1")){vars.Log("Split: Sad Spiderling");vars.sad_spider=0;return true;}
+	if(vars.postal_badge==1&&current.GameItem.Equals("ms2\npostal_badge:1")){vars.Log("Split: Old Postal Badge");vars.postal_badge=0;return true;}
+	if(vars.treasure_map==1&&current.GameItem.Equals("ms2\ntreasure_map:1")){vars.Log("Split: Treasure Map");vars.treasure_map=0;return true;}
+	if(vars.mushroom_2==1&&current.GameItem.Equals("ms2\nmushroom_2:1")){vars.Log("Split: Juicy Cove Mushroom");vars.mushroom_2=0;return true;}
+	if(vars.mushroom_3==1&&current.GameItem.Equals("ms2\nmushroom_3:1")){vars.Log("Split: Poison Toadstool");vars.mushroom_3=0;return true;}
+	if(vars.powerups_skvader_1==1&&current.GameItem.Equals("ms2\npowerups/skvader_1:1")){vars.Log("Split: Skvader");vars.powerups_skvader_1=0;return true;}
+	if(vars.powerups_skvader_2==1&&current.GameItem.Equals("ms2\npowerups/skvader_2:1")){vars.Log("Split: Fat Skvader");vars.powerups_skvader_2=0;return true;}
+	if(vars.package_3==1&&current.GameItem.Equals("ms2\npackage_3:1")){vars.Log("Split: Overdue Package for Quinbe");vars.package_3=0;return true;}
+	if(vars.package_2==1&&current.GameItem.Equals("ms2\npackage_2:1")){vars.Log("Split: Overdue Package for Sin");vars.package_2=0;return true;}
+	if(vars.package_1==1&&current.GameItem.Equals("ms2\npackage_1:1")){vars.Log("Split: Overdue Package for Treek");vars.package_1=0;return true;}
+	if(vars.idol1==1&&current.GameItem.Equals("ms2\nidol1:1")){vars.Log("Split: Statue Chunk");vars.idol1=0;return true;}
+	if(vars.idol2==1&&current.GameItem.Equals("ms2\nidol2:1")){vars.Log("Split: Statue Piece 2");vars.idol2=0;return true;}
+	if(vars.idol3==1&&current.GameItem.Equals("ms2\nidol3:1")){vars.Log("Split: Statue Piece 3");vars.idol3=0;return true;}
+	if(vars.idol4==1&&current.GameItem.Equals("ms2\nidol4:1")){vars.Log("Split: Statue Piece 4");vars.idol4=0;return true;}
+	if(vars.spores_1==1&&current.GameItem.Equals("ms2\nspores_1:1")){vars.Log("Split: Light Spores");vars.spores_1=0;return true;}
+	if(vars.spores_2==1&&current.GameItem.Equals("ms2\nspores_2:1")){vars.Log("Split: Dry Spores");vars.spores_2=0;return true;}
+	if(vars.spores_3==1&&current.GameItem.Equals("ms2\nspores_3:1")){vars.Log("Split: Damp Spores");vars.spores_3=0;return true;}
+	if(vars.spores_4==1&&current.GameItem.Equals("ms2\nspores_4:1")){vars.Log("Split: Annoyed Spores");vars.spores_4=0;return true;}
+	if(vars.spores_5==1&&current.GameItem.Equals("ms2\nspores_5:1")){vars.Log("Split: Frosty Spores");vars.spores_5=0;return true;}
+	if(vars.tracker_caves==1&&current.GameItem.Equals("ms2\ntracker_caves:1")){vars.Log("Split: Cave Tracker");vars.tracker_caves=0;return true;}
+	if(vars.tracker_jungle==1&&current.GameItem.Equals("ms2\ntracker_jungle:1")){vars.Log("Split: Jungle Tracker");vars.tracker_jungle=0;return true;}
+	if(vars.tracker_peak==1&&current.GameItem.Equals("ms2\ntracker_peak:1")){vars.Log("Split: Peak Tracker");vars.tracker_peak=0;return true;}
+	if(vars.tracker_springs==1&&current.GameItem.Equals("ms2\ntracker_springs:1")){vars.Log("Split: Springs Tracker");vars.tracker_springs=0;return true;}
+	if(vars.tracker_scarabs==1&&current.GameItem.Equals("ms2\ntracker_scarabs:1")){vars.Log("Split: Scarabs Tracker");vars.tracker_scarabs=0;return true;}
+	if(vars.skins_skin_1==1&&current.GameItem.Equals("ms2\nskins/skin_1:1")){vars.Log("Split: Bling Sprinkles");vars.skins_skin_1=0;return true;}
+	if(vars.skins_skin_2==1&&current.GameItem.Equals("ms2\nskins/skin_2:1")){vars.Log("Split: Creepy Sprinkles");vars.skins_skin_2=0;return true;}
+	if(vars.skins_skin_3==1&&current.GameItem.Equals("ms2\nskins/skin_3:1")){vars.Log("Split: Deadly Sprinkles");vars.skins_skin_3=0;return true;}
+	if(vars.skins_skin_4==1&&current.GameItem.Equals("ms2\nskins/skin_4:1")){vars.Log("Split: Crimson Sprinkles");vars.skins_skin_4=0;return true;}
+	if(vars.skins_skin_5==1&&current.GameItem.Equals("ms2\nskins/skin_5:1")){vars.Log("Split: Sweet Sprinkles");vars.skins_skin_5=0;return true;}}
 //State
 	if(String.IsNullOrEmpty(current.GameState)){}else{
-	if(vars.doorintr==1&&current.GameState.Equals("memscan_last_state\nintro_landing_creepy_cavern:327")){vars.Log("Split: Door Introduction");vars.doorintr=0;return true;}
-	if(vars.endbossdead==1&&current.GameState.Equals("memscan_last_state\nhub_bowel_bumping_left:3246")){vars.Log("Split: Endboss dead");vars.endbossdead=0;return true;}
-	if(vars.bossboon==1&&current.GameState.Equals("memscan_last_state\npeak_spacemonk_mystery:1436")){vars.Log("Split: Boss Boon");vars.bossboon=0;return true;}
-	if(vars.bossspina==1&&current.GameState.Equals("memscan_last_state\nspring_gangway_grotto:4437")){vars.Log("Split: Boss Spina");vars.bossspina=0;return true;}
-	if(vars.ebontalk==1&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4128")){vars.Log("Split: Talk to Ebon");vars.ebontalk=0;return true;}
-	if(vars.bosssal==1&&current.GameState.Equals("memscan_last_state\nintro_landing_right:3644")){vars.Log("Split: Boss Sal");vars.bosssal=0;return true;}
+	if(vars.doorintr==1&&current.GameState.Equals("ms1\nintro_landing_creepy_cavern:327")){vars.Log("Split: Door Introduction");vars.doorintr=0;return true;}
+	if(vars.endbossdead==1&&current.GameState.Equals("ms1\nhub_bowel_bumping_left:3246")){vars.Log("Split: Endboss dead");vars.endbossdead=0;return true;}
+	if(vars.bossboon==1&&current.GameState.Equals("ms1\npeak_spacemonk_mystery:1436")){vars.Log("Split: Boss Boon");vars.bossboon=0;return true;}
+	if(vars.bossspina==1&&current.GameState.Equals("ms1\nspring_gangway_grotto:4437")){vars.Log("Split: Boss Spina");vars.bossspina=0;return true;}
+	if(vars.ebontalk==1&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4128")){vars.Log("Split: Talk to Ebon");vars.ebontalk=0;return true;}
+	if(vars.bosssal==1&&current.GameState.Equals("ms1\nintro_landing_right:3644")){vars.Log("Split: Boss Sal");vars.bosssal=0;return true;}
 	if(vars.totem>=1){	
-		if(vars.totem==1&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4539")){vars.Log("Split: Totem 1");vars.totem=2;return true;}
-		if(vars.totem==2&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4585")){vars.Log("Split: Totem 2");vars.totem=3;return true;}
-		if(vars.totem==3&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4595")){vars.Log("Split: Totem 3");vars.totem=4;return true;}
-		if(vars.totem==4&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4575")){vars.Log("Split: Totem 4");vars.totem=5;return true;}
-		if(vars.totem==5&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4565")){vars.Log("Split: Totem 5");vars.totem=6;return true;}
-		if(vars.totem==6&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4590")){vars.Log("Split: Totem 6");vars.totem=7;return true;}
-		if(vars.totem==7&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4570")){vars.Log("Split: Totem 7");vars.totem=8;return true;}
-		if(vars.totem==8&&current.GameState.Equals("memscan_last_state\ncave_temple_terror_upper:4685")){vars.Log("Split: Totem 8");vars.totem=0;return true;}}
+		if(vars.totem==1&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4539")){vars.Log("Split: Totem 1");vars.totem=2;return true;}
+		if(vars.totem==2&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4585")){vars.Log("Split: Totem 2");vars.totem=3;return true;}
+		if(vars.totem==3&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4595")){vars.Log("Split: Totem 3");vars.totem=4;return true;}
+		if(vars.totem==4&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4575")){vars.Log("Split: Totem 4");vars.totem=5;return true;}
+		if(vars.totem==5&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4565")){vars.Log("Split: Totem 5");vars.totem=6;return true;}
+		if(vars.totem==6&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4590")){vars.Log("Split: Totem 6");vars.totem=7;return true;}
+		if(vars.totem==7&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4570")){vars.Log("Split: Totem 7");vars.totem=8;return true;}
+		if(vars.totem==8&&current.GameState.Equals("ms1\ncave_temple_terror_upper:4685")){vars.Log("Split: Totem 8");vars.totem=0;return true;}}
 	if(vars.fruit100==1&&current.GameFruits==100){vars.Log("Split: Fruits 600");vars.fruit100=0;return true;}
 	if(vars.fruit600==1&&current.GameFruits==600){vars.Log("Split: Fruits 600");vars.fruit600=0;return true;}}
 }
@@ -505,7 +506,7 @@ split {//only runs when the timer's running (and skipped if reset{} returns true
 start {//only runs when the timer's paused ,return true => starts the timer
 	if(settings["speedrun"]) {
 		if(String.IsNullOrEmpty(current.GameTime)){}else{
-		if(current.GameTime.Equals("memscan_time\n00:00:00.1")) {	
+		if(current.GameTime.Equals("ms5\n00:00:00.1")) {	
 //Levels
 			if(settings["cave_abyssal_access"]){vars.cave_abyssal_access=1;vars.Log("Aktiv: Door Friends Bottom Left [C0]");}else{vars.cave_abyssal_access=0;}
 			if(settings["cave_beach_bottom"]){vars.cave_beach_bottom=1;vars.Log("Aktiv: Ocean Right [C1]");}else{vars.cave_beach_bottom=0;}
@@ -577,7 +578,7 @@ start {//only runs when the timer's paused ,return true => starts the timer
 //Items  
 			if(settings["collectible"]||settings["trueend"]||settings["100%"]){vars.collectible=1;vars.countcollect=0;vars.Log("Aktiv: Wickerling");}else{vars.collectible=0;vars.countcollect=0;}
 			if(settings["wallet"]||settings["wallet%"]){vars.wallet=1;vars.countwallet=0;vars.Log("Aktiv: Wallet Upgrade");}else{vars.wallet=0;vars.countwallet=0;}
-			if(settings["nugget"]){vars.nugget=1;vars.Log("Aktiv: Smashed piece of Statue");}else{vars.nugget=0}
+			if(settings["nugget"]){vars.nugget=1;vars.Log("Aktiv: Smashed piece of Statue");}else{vars.nugget=0;}
 			if(settings["tadpole"]){vars.tadpole=1;vars.counttadpole=0;vars.Log("Aktiv: Tadpole (8 Splitt)");}else{vars.tadpole=0;vars.counttadpole=0;}
 			if(settings["dustbunny_dirty"]){vars.countdustbunny=0;vars.dustbunny=1;vars.Log("Aktiv: Sootling");}else{vars.countdustbunny=0;vars.dustbunny=0;}
 			if(settings["traitor_spirit"]){vars.counttraitor=0;vars.traitor=1;vars.Log("Aktiv: Traitor Spirit");}else{vars.counttraitor_spirit=0;vars.traitor=0;}
